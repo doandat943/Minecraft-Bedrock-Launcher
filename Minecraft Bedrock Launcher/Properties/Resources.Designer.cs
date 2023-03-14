@@ -63,6 +63,16 @@ namespace Minecraft_Bedrock_Launcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Artworks {
+            get {
+                object obj = ResourceManager.GetObject("Artworks", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close_icon {
             get {
                 object obj = ResourceManager.GetObject("close_icon", resourceCulture);
@@ -97,6 +107,23 @@ namespace Minecraft_Bedrock_Launcher.Properties {
             get {
                 object obj = ResourceManager.GetObject("minimize_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @ECHO OFF
+        ///title UPDATER (@doandat943)
+        ///color 0a
+        ///ECHO UPDATE NOW
+        ///taskkill /IM %1 /F
+        ///del /F %2
+        ///curl.exe --output %2 --url https://cloud.kamvdta.xyz:2023/application/%3
+        ///start &quot;&quot; %2
+        ///del %0.
+        /// </summary>
+        internal static string updater {
+            get {
+                return ResourceManager.GetString("updater", resourceCulture);
             }
         }
         

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,18 +12,34 @@ namespace Minecraft_Bedrock_Launcher
     {
         Bitmap vietnam_flag = Properties.Resources.vietnam_480px;
         Bitmap vietnam_government_flag = Properties.Resources.vietnam_government_480px;
-        string path1 = @"C:\Windows\System32\Windows.ApplicationModel.Store.dll";
-        string path2 = @"C:\Windows\System32\Windows.ApplicationModel.Store.Preview.dll";
-        bool bypass_status = false;
+        string original_path = @"C:\Windows\System32\Windows.ApplicationModel.Store.dll";
+        string backup_path = @"C:\Windows\System32\Windows.ApplicationModel.Store.Preview.dll";
+        string modified_dll_hash = "C1469DEA551C95D2C68EB42CEB37F020CB5B75D777E7083F24BF2E54AE2E4F55";
+
+        public bool permit = false;
+        bool flag_animation = true;
+        bool run_status = false;
 
         public MainForm()
         {
             InitializeComponent();
+
+            //
+
+            foreach (string subFolder in Directory.GetDirectories(@"C:\Program Files\WindowsApps"))
+            {
+                if (!subFolder.Contains("Microsoft.MinecraftUWP") && Main_Button.Text == "Active") Main_Button.Text = "Install Minecraft";
+            }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (run_status) stop_bypass();
         }
 
         private void Close_Button_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Environment.Exit(0);
         }
 
         private void Minimize_Button_Click(object sender, EventArgs e)
@@ -30,80 +47,66 @@ namespace Minecraft_Bedrock_Launcher
             WindowState = FormWindowState.Minimized;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void Country_Icon_Click(object sender, EventArgs e)
         {
-            if (Country_Icon.Image == vietnam_flag)
-            {
-                Country_Icon.Image = vietnam_government_flag;
-            }
-            else
-            {
-                Country_Icon.Image = vietnam_flag;
-            }
+            if (flag_animation) flag_animation = false;
+            else flag_animation = true;
+        }
 
-            if (bypass_status == true && Process.GetProcessesByName("Minecraft.Windows").Length == 0) stop_bypass();
+        private void Logo_Click(object sender, EventArgs e)
+        {
+            show_AboutForm();
+        }
+
+        private void Flag_Tick(object sender, EventArgs e)
+        {
+            if (flag_animation)
+            {
+                if (Country_Icon.Image == vietnam_flag) Country_Icon.Image = vietnam_government_flag;
+                else Country_Icon.Image = vietnam_flag;
+            }
+        }
+
+        private void RefreshControl_Tick(object sender, EventArgs e)
+        {
+            if (permit)
+            {
+                if (Main_Button.Text == "Active") Main_Button.Text = "Start";
+                if (run_status && Process.GetProcessesByName("Minecraft.Windows").Length == 0) stop_bypass();
+            }
         }
 
         private void Main_Button_Click(object sender, EventArgs e)
         {
             if (Main_Button.Text == "Start") start_bypass();
             else if (Main_Button.Text == "Stop") stop_bypass();
+            else if (Main_Button.Text == "Active") show_AboutForm();
+            else if (Main_Button.Text == "Install Minecraft") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
         }
 
-        bool check_original(string path)
+        void show_AboutForm()
         {
-            bool temp = false;
-            if (File.Exists(path))
-            {
-                var versInfo = FileVersionInfo.GetVersionInfo(path);
-                if ($"V{versInfo.FileMajorPart}.{versInfo.FileMinorPart}.{versInfo.FileBuildPart}.{versInfo.FilePrivatePart}" != "V10.0.18362.1110") temp = true;
-            }
-            return temp;
+            AboutForm aboutForm = new AboutForm();
+            aboutForm.StartPosition = FormStartPosition.CenterParent;
+            aboutForm.ShowDialog();
         }
 
-        void start_bypass()
+        bool VerifyFileIntegrity(string filePath, string expectedHash)
         {
-            Main_Button.Text = "Stop";
-            stop_Process();
-            Thread.Sleep(1500);
-            //
-            if (check_original(path1) == true && check_original(path2) == false)
+            if (File.Exists(filePath))
             {
-                if (!File.Exists(path2) && File.Exists(path1)) File.Move(path1, path2);
-            }
-            else if (check_original(path1) == true && check_original(path2) == true)
-            {
-                if (File.Exists(path1)) File.Delete(path1);
-            }
-            //
-            File.WriteAllBytes(path1, Properties.Resources.Windows_ApplicationModel_Store);
-            Process.Start("explorer", @"shell:appsFolder\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App");
-            Thread.Sleep(1000);
-            bypass_status = true;
-        }
+                using (var sha256 = SHA256.Create())
+                {
+                    using (var stream = File.OpenRead(filePath))
+                    {
+                        var hash = sha256.ComputeHash(stream);
+                        var hashString = BitConverter.ToString(hash).Replace("-", "");
 
-        void stop_bypass()
-        {
-            Main_Button.Text = "Start";
-            stop_Process();
-            Thread.Sleep(1500);
-            //
-            if (check_original(path1) == false && check_original(path2) == true)
-            {
-                if (File.Exists(path1)) File.Delete(path1);
-                if (File.Exists(path2)) File.Move(path2, path1);
+                        return hashString.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
+                    }
+                }
             }
-            else if (check_original(path1) == false && check_original(path2) == false)
-            {
-                if (File.Exists(path1)) File.Delete(path1);
-                if (File.Exists(path2)) File.Delete(path2);
-            }
-            else if (check_original(path1) == true && check_original(path2) == false)
-            {
-                if (File.Exists(path2)) File.Delete(path2);
-            }
-            //
-            bypass_status = false;
+            else return false;
         }
 
         void stop_Process()
@@ -119,9 +122,39 @@ namespace Minecraft_Bedrock_Launcher
             }
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        void start_bypass()
         {
-            if (bypass_status == true) stop_bypass();
+            Main_Button.Text = "Stop";
+            stop_Process();
+            Thread.Sleep(1500);
+            //
+            if (!VerifyFileIntegrity(original_path, modified_dll_hash))
+            {
+                File.Move(original_path, backup_path);
+            }
+            File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store);
+            //
+            Process.Start("minecraft:\\");
+            Thread.Sleep(1000);
+            run_status = true;
+        }
+
+        void stop_bypass()
+        {
+            Main_Button.Text = "Start";
+            stop_Process();
+            Thread.Sleep(1500);
+            //
+            if (!VerifyFileIntegrity(backup_path, modified_dll_hash))
+            {
+                File.Move(backup_path, original_path);
+            }
+            if (VerifyFileIntegrity(original_path, modified_dll_hash))
+            {
+                File.Delete(original_path);
+            }
+            //
+            run_status = false;
         }
     }
 }

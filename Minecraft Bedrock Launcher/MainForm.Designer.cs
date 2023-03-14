@@ -37,10 +37,10 @@
             this.Close_Button = new Bunifu.Framework.UI.BunifuImageButton();
             this.Country_Icon = new System.Windows.Forms.PictureBox();
             this.ElipseControl = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.DragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
-            this.DragControl2 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.DragControl = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.Main_Button = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.Flag = new System.Windows.Forms.Timer(this.components);
+            this.RefreshControl = new System.Windows.Forms.Timer(this.components);
             this.GradientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Minimize_Button)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
@@ -84,6 +84,7 @@
             // Logo
             // 
             this.Logo.BackColor = System.Drawing.Color.Transparent;
+            this.Logo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Logo.Image = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_text;
             this.Logo.Location = new System.Drawing.Point(10, 4);
             this.Logo.Name = "Logo";
@@ -91,6 +92,7 @@
             this.Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Logo.TabIndex = 1;
             this.Logo.TabStop = false;
+            this.Logo.Click += new System.EventHandler(this.Logo_Click);
             // 
             // Close_Button
             // 
@@ -117,25 +119,19 @@
             this.Country_Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Country_Icon.TabIndex = 2;
             this.Country_Icon.TabStop = false;
+            this.Country_Icon.Click += new System.EventHandler(this.Country_Icon_Click);
             // 
             // ElipseControl
             // 
             this.ElipseControl.ElipseRadius = 10;
             this.ElipseControl.TargetControl = this;
             // 
-            // DragControl1
+            // DragControl
             // 
-            this.DragControl1.Fixed = true;
-            this.DragControl1.Horizontal = true;
-            this.DragControl1.TargetControl = this.GradientPanel;
-            this.DragControl1.Vertical = true;
-            // 
-            // DragControl2
-            // 
-            this.DragControl2.Fixed = true;
-            this.DragControl2.Horizontal = true;
-            this.DragControl2.TargetControl = this.Logo;
-            this.DragControl2.Vertical = true;
+            this.DragControl.Fixed = true;
+            this.DragControl.Horizontal = true;
+            this.DragControl.TargetControl = this.GradientPanel;
+            this.DragControl.Vertical = true;
             // 
             // Main_Button
             // 
@@ -146,7 +142,7 @@
             this.Main_Button.BackColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(170)))), ((int)(((byte)(65)))));
             this.Main_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Main_Button.BackgroundImage")));
             this.Main_Button.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderStyles.Solid;
-            this.Main_Button.ButtonText = "Start";
+            this.Main_Button.ButtonText = "Active";
             this.Main_Button.ButtonTextMarginLeft = 0;
             this.Main_Button.ColorContrastOnClick = 45;
             this.Main_Button.ColorContrastOnHover = 45;
@@ -207,17 +203,22 @@
             this.Main_Button.UseDefaultRadiusAndThickness = true;
             this.Main_Button.Click += new System.EventHandler(this.Main_Button_Click);
             // 
-            // timer
+            // Flag
             // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.Flag.Enabled = true;
+            this.Flag.Interval = 1000;
+            this.Flag.Tick += new System.EventHandler(this.Flag_Tick);
+            // 
+            // RefreshControl
+            // 
+            this.RefreshControl.Enabled = true;
+            this.RefreshControl.Tick += new System.EventHandler(this.RefreshControl_Tick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.Main_Button);
             this.Controls.Add(this.GradientPanel);
@@ -241,13 +242,13 @@
         private Bunifu.Framework.UI.BunifuGradientPanel GradientPanel;
         private Bunifu.Framework.UI.BunifuElipse ElipseControl;
         private System.Windows.Forms.PictureBox Logo;
-        private Bunifu.Framework.UI.BunifuDragControl DragControl1;
-        private Bunifu.Framework.UI.BunifuDragControl DragControl2;
+        private Bunifu.Framework.UI.BunifuDragControl DragControl;
         private System.Windows.Forms.PictureBox Country_Icon;
         private Bunifu.Framework.UI.BunifuImageButton Close_Button;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton Main_Button;
         private Bunifu.Framework.UI.BunifuImageButton Minimize_Button;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer Flag;
+        private System.Windows.Forms.Timer RefreshControl;
     }
 }
 
