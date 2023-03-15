@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
+            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges2 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
             this.GradientPanel = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.Minimize_Button = new Bunifu.Framework.UI.BunifuImageButton();
             this.Logo = new System.Windows.Forms.PictureBox();
@@ -41,11 +41,13 @@
             this.Main_Button = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
             this.Flag = new System.Windows.Forms.Timer(this.components);
             this.RefreshControl = new System.Windows.Forms.Timer(this.components);
+            this.axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.GradientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Minimize_Button)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Close_Button)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Country_Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // GradientPanel
@@ -147,11 +149,11 @@
             this.Main_Button.ColorContrastOnClick = 45;
             this.Main_Button.ColorContrastOnHover = 45;
             this.Main_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-            borderEdges1.BottomLeft = true;
-            borderEdges1.BottomRight = true;
-            borderEdges1.TopLeft = true;
-            borderEdges1.TopRight = true;
-            this.Main_Button.CustomizableEdges = borderEdges1;
+            borderEdges2.BottomLeft = true;
+            borderEdges2.BottomRight = true;
+            borderEdges2.TopLeft = true;
+            borderEdges2.TopRight = true;
+            this.Main_Button.CustomizableEdges = borderEdges2;
             this.Main_Button.DialogResult = System.Windows.Forms.DialogResult.None;
             this.Main_Button.DisabledBorderColor = System.Drawing.Color.Empty;
             this.Main_Button.DisabledFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
@@ -214,12 +216,23 @@
             this.RefreshControl.Enabled = true;
             this.RefreshControl.Tick += new System.EventHandler(this.RefreshControl_Tick);
             // 
+            // axWindowsMediaPlayer
+            // 
+            this.axWindowsMediaPlayer.Enabled = true;
+            this.axWindowsMediaPlayer.Location = new System.Drawing.Point(0, 0);
+            this.axWindowsMediaPlayer.Name = "axWindowsMediaPlayer";
+            this.axWindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer.OcxState")));
+            this.axWindowsMediaPlayer.Size = new System.Drawing.Size(0, 0);
+            this.axWindowsMediaPlayer.TabIndex = 2;
+            this.axWindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer_PlayStateChange);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.axWindowsMediaPlayer);
             this.Controls.Add(this.Main_Button);
             this.Controls.Add(this.GradientPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -233,6 +246,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Close_Button)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Country_Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -249,6 +263,7 @@
         private Bunifu.Framework.UI.BunifuImageButton Minimize_Button;
         private System.Windows.Forms.Timer Flag;
         private System.Windows.Forms.Timer RefreshControl;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
     }
 }
 
