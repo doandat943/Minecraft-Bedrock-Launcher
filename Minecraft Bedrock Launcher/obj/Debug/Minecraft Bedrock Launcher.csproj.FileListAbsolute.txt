@@ -40,6 +40,7 @@ C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.GenerateResource.cache
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.CoreCompileInputs.cache
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.Fody.CopyLocal.cache
+C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.Fody.RuntimeCopyLocal.cache
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.CopyComplete
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.exe
 C:\Users\doandat943\source\repos\doandat943\Minecraft Bedrock Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.pdb
