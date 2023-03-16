@@ -24,7 +24,7 @@ namespace Minecraft_Bedrock_Launcher
 
         public bool permit = false;
         bool flag_animation = true;
-        string run_mode = "bedrock";
+        string run_mode = "Minecraft Bedrock";
         bool run_status = false;
 
         public MainForm()
@@ -73,6 +73,27 @@ namespace Minecraft_Bedrock_Launcher
         {
             if (run_status == true) Stop_Bypass();
         }
+
+        private void MainForm_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip ContextMenu = new ContextMenuStrip();
+
+                ToolStripMenuItem option = new ToolStripMenuItem(run_mode);
+                option.Click += new EventHandler(Option_Click);
+
+                ContextMenu.Items.Add(option);
+                ContextMenu.Show(this, new Point(e.X, e.Y));
+            }
+        }
+
+        private void Option_Click(object sender, EventArgs e)
+        {
+            if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education";
+            else run_mode = "Minecraft Bedrock";
+        }
+
 
         private void Close_Button_Click(object sender, EventArgs e)
         {
@@ -130,7 +151,7 @@ namespace Minecraft_Bedrock_Launcher
 
         void Install()
         {
-            if (run_mode == "bedrock") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
+            if (run_mode == "Minecraft Bedrock") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
             else Process.Start("https://archive.org/details/minecraft-education-edition-win32");
         }
 
@@ -179,7 +200,7 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Stop";
             StopProcess();
-            if (run_mode == "bedrock")
+            if (run_mode == "Minecraft Bedrock")
             {
                 Process process = new Process();
                 process.StartInfo.FileName = "icacls";
@@ -219,7 +240,7 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Start";
             StopProcess();
-            if (run_mode == "bedrock")
+            if (run_mode == "Minecraft Bedrock")
             {
                 Thread.Sleep(1000);
                 //

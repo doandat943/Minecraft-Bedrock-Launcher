@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges2 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
+            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
             this.GradientPanel = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.Minimize_Button = new Bunifu.Framework.UI.BunifuImageButton();
             this.Logo = new System.Windows.Forms.PictureBox();
@@ -149,11 +149,11 @@
             this.Main_Button.ColorContrastOnClick = 45;
             this.Main_Button.ColorContrastOnHover = 45;
             this.Main_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-            borderEdges2.BottomLeft = true;
-            borderEdges2.BottomRight = true;
-            borderEdges2.TopLeft = true;
-            borderEdges2.TopRight = true;
-            this.Main_Button.CustomizableEdges = borderEdges2;
+            borderEdges1.BottomLeft = true;
+            borderEdges1.BottomRight = true;
+            borderEdges1.TopLeft = true;
+            borderEdges1.TopRight = true;
+            this.Main_Button.CustomizableEdges = borderEdges1;
             this.Main_Button.DialogResult = System.Windows.Forms.DialogResult.None;
             this.Main_Button.DisabledBorderColor = System.Drawing.Color.Empty;
             this.Main_Button.DisabledFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
@@ -241,6 +241,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Minecraft Bedrock Launcher";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseClick);
             this.GradientPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Minimize_Button)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
