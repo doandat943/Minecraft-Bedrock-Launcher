@@ -45,7 +45,13 @@ namespace Minecraft_Bedrock_Launcher
                     command.Parameters.AddWithValue("@date", today);
                     command.Parameters.AddWithValue("@app_name", app_name);
                     command.Parameters.AddWithValue("@app_version", app_version);
-                    command.Parameters.AddWithValue("@note", mainForm.bedrock_version + ", " + mainForm.education_version);
+                    command.Parameters.AddWithValue("@bedrock_version", mainForm.bedrock_version);
+                    command.Parameters.AddWithValue("@education_version", mainForm.education_version);
+
+                    // Pointer_ME (GET)
+
+                    command.CommandText = "SELECT education_pointer FROM Pointer_ME WHERE education_version = @education_version";
+                    mainForm.education_pointer = (string)command.ExecuteScalar();
 
                     // App_Info (GET)
                     command.CommandText = "SELECT app_id FROM Application WHERE app_name = @app_name";
@@ -70,7 +76,7 @@ namespace Minecraft_Bedrock_Launcher
                         command.CommandText = "UPDATE User SET continent = @continent, country = @country, region = @region WHERE device_id = @device_id";
                         command.ExecuteNonQuery();
 
-                        command.CommandText = "UPDATE User_Logs SET app_version = @app_version, last_used = @date, note = @note WHERE device_id = @device_id";
+                        command.CommandText = "UPDATE User_Logs SET app_version = @app_version, last_used = @date, note = CONCAT(@bedrock_version, \", \", @education_version) WHERE device_id = @device_id";
                         command.ExecuteNonQuery();
 
                         // return permit
@@ -82,11 +88,11 @@ namespace Minecraft_Bedrock_Launcher
                         command.CommandText = "INSERT INTO User VALUES (@device_id, @permit, @os, @continent, @country, @region, @date)";
                         command.ExecuteNonQuery();
 
-                        command.CommandText = "INSERT INTO User_Logs VALUES (@device_id, @app_id, @app_version, @date, @date, @note)";
+                        command.CommandText = "INSERT INTO User_Logs VALUES (@device_id, @app_id, @app_version, @date, @date, @bedrock_version + \", \" + @education_version)";
                         command.ExecuteNonQuery();
                     }
 
-                    if (lastest_version != app_version) Main_Button.Text = "Update";
+                    if ((lastest_version != app_version) || mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash)) Main_Button.Text = "Update";
 
                     textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region;
                     textBox1.Text += "\r\n-----------------------------------------------" + "\r\nApplication: " + app_name + "\r\nVersion: " + app_version + (lastest_version == app_version ? " (Lastest)" : " (Outdated)") + "\r\nDeveloper: @doandat943\r\nWebsite: cloud.kamvdta.xyz\r\nEmail: doandat943@kamvdta.xyz";

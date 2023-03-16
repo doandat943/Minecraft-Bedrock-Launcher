@@ -81,6 +81,16 @@ namespace Minecraft_Bedrock_Launcher.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MBL_Helper {
+            get {
+                object obj = ResourceManager.GetObject("MBL_Helper", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap minecraft_bee {
@@ -115,9 +125,9 @@ namespace Minecraft_Bedrock_Launcher.Properties {
         ///title UPDATER (@doandat943)
         ///color 0a
         ///ECHO UPDATE NOW
-        ///taskkill /IM %1 /F
+        ///taskkill /IM %1.exe /F
         ///del /F %2
-        ///curl.exe --output %2 --url https://cloud.kamvdta.xyz:2023/application/%3
+        ///curl.exe --output %2 --url https://cloud.kamvdta.xyz:2023/application/%3.exe
         ///start &quot;&quot; %2
         ///del %0.
         /// </summary>

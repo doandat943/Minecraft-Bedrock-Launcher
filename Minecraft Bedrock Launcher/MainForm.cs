@@ -1,5 +1,4 @@
-﻿using AxWMPLib;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -21,9 +20,11 @@ namespace Minecraft_Bedrock_Launcher
 
         public string bedrock_version;
         public string education_version;
+        public string education_pointer;
 
         public bool permit = false;
         bool flag_animation = true;
+        string run_mode = "bedrock";
         bool run_status = false;
 
         public MainForm()
@@ -32,6 +33,7 @@ namespace Minecraft_Bedrock_Launcher
 
             //
 
+            Main_Button.Visible = false;
             Close_Button.Enabled = false;
             Logo.Enabled = false;
 
@@ -60,9 +62,10 @@ namespace Minecraft_Bedrock_Launcher
         {
             if (e.newState == ((int)WMPLib.WMPPlayState.wmppsMediaEnded))
             {
-                axWindowsMediaPlayer.Hide();
+                Main_Button.Visible = true;
                 Close_Button.Enabled = true;
                 Logo.Enabled = true;
+                axWindowsMediaPlayer.Hide();
             }
         }
 
@@ -73,7 +76,7 @@ namespace Minecraft_Bedrock_Launcher
 
         private void Close_Button_Click(object sender, EventArgs e)
         {
-            Environment.Exit(0);
+            Application.Exit();
         }
 
         private void Minimize_Button_Click(object sender, EventArgs e)
@@ -106,7 +109,7 @@ namespace Minecraft_Bedrock_Launcher
             if (permit == true)
             {
                 if (Main_Button.Text == "Active") Main_Button.Text = "Start";
-                else if (run_status && Process.GetProcessesByName("Minecraft.Windows").Length == 0) Stop_Bypass();
+                else if (run_status == true && Process.GetProcessesByName("Minecraft.Windows").Length == 0) Stop_Bypass();
             }
         }
 
@@ -115,7 +118,7 @@ namespace Minecraft_Bedrock_Launcher
             if (Main_Button.Text == "Start") Start_Bypass();
             else if (Main_Button.Text == "Stop") Stop_Bypass();
             else if (Main_Button.Text == "Active") Show_AboutForm();
-            else if (Main_Button.Text == "Install Minecraft") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
+            else if (Main_Button.Text == "Install Minecraft") Install();
         }
 
         void Show_AboutForm()
@@ -123,6 +126,12 @@ namespace Minecraft_Bedrock_Launcher
             AboutForm aboutForm = new AboutForm();
             aboutForm.StartPosition = FormStartPosition.CenterParent;
             aboutForm.ShowDialog();
+        }
+
+        void Install()
+        {
+            if (run_mode == "bedrock") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
+            else Process.Start("https://archive.org/details/minecraft-education-edition-win32");
         }
 
         public bool VerifyFileIntegrity(string filePath, string expectedHash)
@@ -148,7 +157,7 @@ namespace Minecraft_Bedrock_Launcher
             if (File.Exists(filePath))
             {
                 var versInfo = FileVersionInfo.GetVersionInfo(filePath);
-                return $"V{versInfo.FileMajorPart}.{versInfo.FileMinorPart}.{versInfo.FileBuildPart}.{versInfo.FilePrivatePart}";
+                return $"{versInfo.FileMajorPart}.{versInfo.FileMinorPart}.{versInfo.FileBuildPart}.{versInfo.FilePrivatePart}";
             }
             return null;
         }
@@ -170,23 +179,38 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Stop";
             StopProcess();
-
-            Process process = new Process();
-            process.StartInfo.FileName = "icacls";
-            process.StartInfo.Arguments = original_path + " /GRANT ADMINISTRATORS:F";
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.Start();
-            process.WaitForExit();
-
-            Thread.Sleep(1000);
-            //
-            if (!VerifyFileIntegrity(original_path, modified_dll_hash))
+            if (run_mode == "bedrock")
             {
-                File.Move(original_path, backup_path);
+                Process process = new Process();
+                process.StartInfo.FileName = "icacls";
+                process.StartInfo.Arguments = original_path + " /GRANT ADMINISTRATORS:F";
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.Start();
+                process.WaitForExit();
+
+                Thread.Sleep(1000);
+                //
+                if (!VerifyFileIntegrity(original_path, modified_dll_hash))
+                {
+                    File.Move(original_path, backup_path);
+                }
+                File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store);
+                //
+                Process.Start("minecraft:\\");
             }
-            File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store);
-            //
-            Process.Start("minecraft:\\");
+            else
+            {
+                Process.Start(education_path);
+
+                File.WriteAllBytes("MBL_Helper.exe", Properties.Resources.MBL_Helper);
+                Process process = new Process();
+                process.StartInfo.FileName = "MBL_Helper";
+                process.StartInfo.Arguments = "\"" + education_pointer + "\"";
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.Start();
+                process.WaitForExit();
+            }
+
             Thread.Sleep(1000);
             run_status = true;
         }
@@ -195,15 +219,22 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Start";
             StopProcess();
-            Thread.Sleep(1000);
-            //
-            if (VerifyFileIntegrity(original_path, modified_dll_hash))
+            if (run_mode == "bedrock")
             {
-                File.Delete(original_path);
+                Thread.Sleep(1000);
+                //
+                if (VerifyFileIntegrity(original_path, modified_dll_hash))
+                {
+                    File.Delete(original_path);
+                }
+                if (!VerifyFileIntegrity(backup_path, modified_dll_hash))
+                {
+                    File.Move(backup_path, original_path);
+                }
             }
-            if (!VerifyFileIntegrity(backup_path, modified_dll_hash))
+            else
             {
-                File.Move(backup_path, original_path);
+                File.Delete("MBL_Helper.exe");
             }
             //
             run_status = false;
