@@ -170,7 +170,15 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Stop";
             StopProcess();
-            Thread.Sleep(1500);
+
+            Process process = new Process();
+            process.StartInfo.FileName = "icacls";
+            process.StartInfo.Arguments = original_path + " /GRANT ADMINISTRATORS:F";
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.Start();
+            process.WaitForExit();
+
+            Thread.Sleep(1000);
             //
             if (!VerifyFileIntegrity(original_path, modified_dll_hash))
             {
@@ -187,15 +195,15 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Start";
             StopProcess();
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             //
-            if (!VerifyFileIntegrity(backup_path, modified_dll_hash))
-            {
-                File.Move(backup_path, original_path);
-            }
             if (VerifyFileIntegrity(original_path, modified_dll_hash))
             {
                 File.Delete(original_path);
+            }
+            if (!VerifyFileIntegrity(backup_path, modified_dll_hash))
+            {
+                File.Move(backup_path, original_path);
             }
             //
             run_status = false;

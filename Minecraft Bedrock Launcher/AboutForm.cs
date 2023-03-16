@@ -108,9 +108,9 @@ namespace Minecraft_Bedrock_Launcher
 
                 Process process = new Process();
                 process.StartInfo.FileName = updater_path;
+                process.StartInfo.Arguments = "\"" + Process.GetCurrentProcess().ProcessName + "\" \"" + Application.ExecutablePath + "\" \"" + app_name.Replace(" ", "_") + "\"";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.Arguments = "\"" + Process.GetCurrentProcess().ProcessName + "\" \"" + Application.ExecutablePath + "\" \"" + app_name.Replace(" ", "_") + "\"";
                 process.Start();
             }
             else this.Close();
