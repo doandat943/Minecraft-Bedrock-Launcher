@@ -41,6 +41,7 @@ namespace Minecraft_Bedrock_Launcher
 
             axWindowsMediaPlayer.Dock = DockStyle.Fill;
             axWindowsMediaPlayer.uiMode = "none";
+            axWindowsMediaPlayer.enableContextMenu = false;
             axWindowsMediaPlayer.URL = "https://cloud.kamvdta.xyz:2023/application/Intro_MBL.mp4";
 
             // Get Bedrock Version
@@ -68,6 +69,7 @@ namespace Minecraft_Bedrock_Launcher
                 Close_Button.Enabled = true;
                 Logo.Enabled = true;
                 axWindowsMediaPlayer.Hide();
+                axWindowsMediaPlayer.close();
             }
         }
 
@@ -95,8 +97,8 @@ namespace Minecraft_Bedrock_Launcher
                 option2.Click += new EventHandler(Option_Click);
                 switch_option.Click += new EventHandler(Option_Click);
 
-                edition_option.DropDownItems.Add(option1);
-                if (run_mode != "Minecraft Bedrock") edition_option.DropDownItems.Add(option2);
+                if ((run_mode == "Minecraft Bedrock" && bedrock_version != null) || (run_mode == "Minecraft Education" && education_version != null)) edition_option.DropDownItems.Add(option1);
+                if (run_mode == "Minecraft Education" && education_version != null && run_status == true) edition_option.DropDownItems.Add(option2);
                 ContextMenu.Items.Add(edition_option);
                 ContextMenu.Items.Add(switch_option);
                 ContextMenu.Show(this, new Point(e.X, e.Y));
@@ -112,7 +114,7 @@ namespace Minecraft_Bedrock_Launcher
             {
                 string path = "";
                 if (run_mode == "Minecraft Bedrock") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
-                else path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Minecraft Education Edition\games\com.mojang\minecraftpe\options.txt";
+                else if (run_mode == "Minecraft Education") path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Minecraft Education Edition\games\com.mojang\minecraftpe\options.txt";
 
                 string content = File.ReadAllText(path);
                 Match match = Regex.Match(content, "mp_username:(.*)");
@@ -134,9 +136,16 @@ namespace Minecraft_Bedrock_Launcher
             }
             else if (itemTag == "Switch")
             {
-                if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education";
-                else run_mode = "Minecraft Bedrock";
                 if (run_status == true) Stop_Bypass();
+                if (run_mode == "Minecraft Bedrock")
+                {
+                    run_mode = "Minecraft Education";
+                }
+                else if (run_mode == "Minecraft Education")
+                {
+                    run_mode = "Minecraft Bedrock";
+                }
+                if (bedrock_version == null || education_version == null) Main_Button.Text = "Install Minecraft";
             }
         }
 
@@ -197,7 +206,7 @@ namespace Minecraft_Bedrock_Launcher
         void Install()
         {
             if (run_mode == "Minecraft Bedrock") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
-            else Process.Start("https://archive.org/details/minecraft-education-edition-win32");
+            else if (run_mode == "Minecraft Education") Process.Start("https://archive.org/details/minecraft-education-edition-win32");
         }
 
         public bool VerifyFileIntegrity(string filePath, string expectedHash)
@@ -264,7 +273,7 @@ namespace Minecraft_Bedrock_Launcher
                 //
                 Process.Start("minecraft:\\");
             }
-            else
+            else if (run_mode == "Minecraft Education")
             {
                 Process.Start(education_path);
 
@@ -298,7 +307,7 @@ namespace Minecraft_Bedrock_Launcher
                     File.Move(backup_path, original_path);
                 }
             }
-            else
+            else if (run_mode == "Minecraft Education")
             {
                 File.Delete("MBL_Helper.exe");
             }

@@ -98,9 +98,9 @@ namespace Minecraft_Bedrock_Launcher
                     textBox1.Text += "\r\n-----------------------------------------------" + "\r\nNote: " + (mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash) ? "This app is verified as genuine." : "This app may be corrupted or tampered with.") + "\r\nLastest Version: " + lastest_version + " (" + release_date.ToString("yyyy/MM/dd") + ")";
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message);
+                textBox1.Text = "No Internet Connection";
             }
         }
 
