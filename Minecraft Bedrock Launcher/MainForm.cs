@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -76,24 +78,67 @@ namespace Minecraft_Bedrock_Launcher
 
         private void MainForm_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && permit == true)
             {
                 ContextMenuStrip ContextMenu = new ContextMenuStrip();
 
-                ToolStripMenuItem option = new ToolStripMenuItem(run_mode);
-                option.Click += new EventHandler(Option_Click);
+                ToolStripMenuItem edition_option = new ToolStripMenuItem(run_mode);
+                ToolStripMenuItem option1 = new ToolStripMenuItem("Change Local Gamertag");
+                ToolStripMenuItem option2 = new ToolStripMenuItem("Bypass");
+                ToolStripMenuItem switch_option = new ToolStripMenuItem("Switch");
 
-                ContextMenu.Items.Add(option);
+                option1.Tag = "ChangeLocalGamertag";
+                option2.Tag = "Bypass";
+                switch_option.Tag = "Switch";
+
+                option1.Click += new EventHandler(Option_Click);
+                option2.Click += new EventHandler(Option_Click);
+                switch_option.Click += new EventHandler(Option_Click);
+
+                edition_option.DropDownItems.Add(option1);
+                if (run_mode != "Minecraft Bedrock") edition_option.DropDownItems.Add(option2);
+                ContextMenu.Items.Add(edition_option);
+                ContextMenu.Items.Add(switch_option);
                 ContextMenu.Show(this, new Point(e.X, e.Y));
             }
         }
 
         private void Option_Click(object sender, EventArgs e)
         {
-            if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education";
-            else run_mode = "Minecraft Bedrock";
-        }
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            string itemTag = clickedItem.Tag.ToString();
 
+            if (itemTag == "ChangeLocalGamertag")
+            {
+                string path = "";
+                if (run_mode == "Minecraft Bedrock") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
+                else path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Minecraft Education Edition\games\com.mojang\minecraftpe\options.txt";
+
+                string content = File.ReadAllText(path);
+                Match match = Regex.Match(content, "mp_username:(.*)");
+                string old_username = match.Groups[1].Value;
+                string new_username = Interaction.InputBox("Enter GamerTag:", "", old_username);
+                if (new_username != "")
+                {
+                    File.WriteAllText(path, content.Replace("mp_username:" + old_username, "mp_username:" + new_username));
+                    if (run_status == true)
+                    {
+                        Stop_Bypass();
+                        Start_Bypass();
+                    }
+                }
+            }
+            else if (itemTag == "Bypass")
+            {
+                Start_Bypass();
+            }
+            else if (itemTag == "Switch")
+            {
+                if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education";
+                else run_mode = "Minecraft Bedrock";
+                if (run_status == true) Stop_Bypass();
+            }
+        }
 
         private void Close_Button_Click(object sender, EventArgs e)
         {
@@ -199,9 +244,9 @@ namespace Minecraft_Bedrock_Launcher
         void Start_Bypass()
         {
             Main_Button.Text = "Stop";
-            StopProcess();
             if (run_mode == "Minecraft Bedrock")
             {
+                StopProcess();
                 Process process = new Process();
                 process.StartInfo.FileName = "icacls";
                 process.StartInfo.Arguments = original_path + " /GRANT ADMINISTRATORS:F";

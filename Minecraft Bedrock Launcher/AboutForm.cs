@@ -49,7 +49,6 @@ namespace Minecraft_Bedrock_Launcher
                     command.Parameters.AddWithValue("@education_version", mainForm.education_version);
 
                     // Pointer_ME (GET)
-
                     command.CommandText = "SELECT education_pointer FROM Pointer_ME WHERE education_version = @education_version";
                     mainForm.education_pointer = (string)command.ExecuteScalar();
 
