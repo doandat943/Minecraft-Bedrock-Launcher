@@ -14,6 +14,7 @@ namespace Minecraft_Bedrock_Launcher
     {
         MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
         string continent, country, region;
+        string app_id;
         string app_name = Application.ProductName;
         string app_version = Application.ProductVersion;
 
@@ -54,7 +55,7 @@ namespace Minecraft_Bedrock_Launcher
 
                     // App_Info (GET)
                     command.CommandText = "SELECT app_id FROM Application WHERE app_name = @app_name";
-                    string app_id = (string)command.ExecuteScalar();
+                    app_id = (string)command.ExecuteScalar();
                     command.Parameters.AddWithValue("@app_id", app_id);
 
                     command.CommandText = "SELECT app_hash FROM App_Info WHERE app_id = @app_id and app_version = @app_version";
@@ -91,11 +92,24 @@ namespace Minecraft_Bedrock_Launcher
                         command.ExecuteNonQuery();
                     }
 
-                    if ((lastest_version != app_version) || mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash)) Main_Button.Text = "Update";
-
                     textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region;
-                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nApplication: " + app_name + "\r\nVersion: " + app_version + (lastest_version == app_version ? " (Lastest)" : " (Outdated)") + "\r\nDeveloper: @doandat943\r\nWebsite: cloud.kamvdta.xyz\r\nEmail: doandat943@kamvdta.xyz";
-                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nNote: " + (mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash) ? "This app is verified as genuine." : "This app may be corrupted or tampered with.") + "\r\nLastest Version: " + lastest_version + " (" + release_date.ToString("yyyy/MM/dd") + ")";
+
+                    string temp;
+                    if (lastest_version != app_version)
+                    {
+                        Main_Button.Text = "Update";
+                        temp = " (Outdated)";
+                    }
+                    else temp = " (Lastest)";
+                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nApplication: " + app_name + "\r\nVersion: " + app_version + temp + "\r\nDeveloper: @doandat943\r\nWebsite: cloud.kamvdta.xyz\r\nEmail: doandat943@kamvdta.xyz";
+
+                    if (!mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash))
+                    {
+                        Main_Button.Text = "Update";
+                        temp = "This app may be corrupted or tampered with.";
+                    }
+                    else temp = "This app is verified as genuine.";
+                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nNote: " + temp + "\r\nLastest Version: " + lastest_version + " (" + release_date.ToString("yyyy/MM/dd") + ")";
                 }
             }
             catch
@@ -113,7 +127,7 @@ namespace Minecraft_Bedrock_Launcher
 
                 Process process = new Process();
                 process.StartInfo.FileName = updater_path;
-                process.StartInfo.Arguments = "\"" + Process.GetCurrentProcess().ProcessName + "\" \"" + Application.ExecutablePath + "\" \"" + app_name.Replace(" ", "_") + "\"";
+                process.StartInfo.Arguments = "\"" + Process.GetCurrentProcess().ProcessName + "\" \"" + Application.ExecutablePath + "\" \"" + app_id + "\" \"" + app_name.Replace(" ", "_") + "\"";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();

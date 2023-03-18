@@ -294,7 +294,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="minecraft_creeper.ico" />
-    <None Include="Resources\MBL.Helper.exe" />
     <Content Include="Resources\minecraft_bee.jpg" />
     <None Include="Resources\artworks.png" />
     <None Include="Resources\Windows.ApplicationModel.Store.dll" />
