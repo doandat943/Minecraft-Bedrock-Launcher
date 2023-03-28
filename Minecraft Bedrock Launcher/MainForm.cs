@@ -177,7 +177,7 @@ namespace Minecraft_Bedrock_Launcher
             if (Main_Button.Text == "Start") Start_Bypass();
             else if (Main_Button.Text == "Stop") Stop_Bypass();
             else if (Main_Button.Text == "Active") Show_AboutForm();
-            else if (Main_Button.Text == "Install Minecraft") Install();
+            else if (Main_Button.Text == "Install Minecraft") Install_Minecraft();
         }
 
         void Show_AboutForm()
@@ -187,7 +187,7 @@ namespace Minecraft_Bedrock_Launcher
             aboutForm.ShowDialog();
         }
 
-        void Install()
+        void Install_Minecraft()
         {
             if (run_mode == "Minecraft Bedrock") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
             else if (run_mode == "Minecraft Education") Process.Start($"ms-windows-store://pdp/?PFN=Microsoft.MinecraftEducationEdition_8wekyb3d8bbwe");
@@ -245,16 +245,6 @@ namespace Minecraft_Bedrock_Launcher
             }
         }
 
-        string GetFileVersion(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                var versInfo = FileVersionInfo.GetVersionInfo(filePath);
-                return $"{versInfo.FileMajorPart}.{versInfo.FileMinorPart}.{versInfo.FileBuildPart}.{versInfo.FilePrivatePart}";
-            }
-            return null;
-        }
-
         void StopProcess()
         {
             String[] list = new String[] { "Minecraft.Windows", "WinStore.App", "GameBar", "RuntimeBroker", "MBL.Helper_x64" };
@@ -283,13 +273,12 @@ namespace Minecraft_Bedrock_Launcher
         void Start_Bypass()
         {
             Main_Button.Text = "Stop";
+            if (run_status == false) StopProcess();
+
             if (run_mode == "Minecraft Bedrock")
             {
-                StopProcess();
-
                 RunCommand("takeown /f " + original_path);
                 RunCommand("icacls " + original_path + " /GRANT ADMINISTRATORS:F");
-
                 Thread.Sleep(1000);
                 //
                 if (!VerifyFileIntegrity(original_path, modified_dll_hash))
@@ -302,13 +291,12 @@ namespace Minecraft_Bedrock_Launcher
             }
             else if (run_mode == "Minecraft Education")
             {
-                if (run_status == false) StopProcess();
-
                 using (WebClient client = new WebClient())
                 {
                     client.DownloadFile("https://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
                 }
                 Process.Start("explorer", "minecraftedu:");
+                Thread.Sleep(1000);
                 RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_pointer + "\" 9");
             }
 
