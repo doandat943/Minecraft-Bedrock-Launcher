@@ -298,25 +298,18 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store);
                 //
-                Process.Start("minecraft:");
+                Process.Start("explorer", "minecraft:");
             }
             else if (run_mode == "Minecraft Education")
             {
-                try
-                {
-                    if (run_status == false) StopProcess();
+                if (run_status == false) StopProcess();
 
-                    using (WebClient client = new WebClient())
-                    {
-                        client.DownloadFile("https://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
-                    }
-                    Process.Start("minecraftedu:");
-                    RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_pointer + "\" 9");
-                }
-                catch
+                using (WebClient client = new WebClient())
                 {
-                    Show_AboutForm();
+                    client.DownloadFile("https://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
                 }
+                Process.Start("explorer", "minecraftedu:");
+                RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_pointer + "\" 9");
             }
 
             Thread.Sleep(1000);
