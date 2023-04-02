@@ -47,11 +47,8 @@ namespace Minecraft_Bedrock_Launcher
                     command.Parameters.AddWithValue("@app_name", app_name);
                     command.Parameters.AddWithValue("@app_version", app_version);
                     command.Parameters.AddWithValue("@bedrock_version", mainForm.bedrock_version);
-                    command.Parameters.AddWithValue("@education_version", mainForm.education_version);
-
-                    // Pointer_ME (GET)
-                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_version";
-                    mainForm.education_pointer = (string)command.ExecuteScalar();
+                    command.Parameters.AddWithValue("@education_win64_version", mainForm.education_win64_version);
+                    command.Parameters.AddWithValue("@education_win32_version", mainForm.education_win32_version);
 
                     // App_Info (GET)
                     command.CommandText = "SELECT app_id FROM Application WHERE app_name = @app_name";
@@ -62,6 +59,8 @@ namespace Minecraft_Bedrock_Launcher
                     string app_hash = (string)command.ExecuteScalar();
                     command.Parameters.AddWithValue("@app_hash", app_hash);
 
+                    // App_Info (GET) --> Lastest
+
                     command.CommandText = "SELECT app_version FROM App_Info WHERE app_id = @app_id ORDER BY release_date DESC LIMIT 1";
                     string lastest_version = (string)command.ExecuteScalar();
                     command.Parameters.AddWithValue("@lastest_version", lastest_version);
@@ -69,27 +68,45 @@ namespace Minecraft_Bedrock_Launcher
                     command.CommandText = "SELECT release_date FROM App_Info WHERE app_version = @lastest_version";
                     DateTime release_date = (DateTime)command.ExecuteScalar();
 
-                    // Check Device_ID
+                    // User (UPDATE)
                     command.CommandText = "SELECT * FROM User WHERE device_id = @device_id";
                     if (command.ExecuteScalar() != null)
                     {
                         command.CommandText = "UPDATE User SET continent = @continent, country = @country, region = @region WHERE device_id = @device_id";
                         command.ExecuteNonQuery();
-
-                        command.CommandText = "UPDATE User_Logs SET app_version = @app_version, last_used = @date, note = CONCAT(@bedrock_version, \", \", @education_version) WHERE device_id = @device_id";
-                        command.ExecuteNonQuery();
-
-                        // return permit
-                        command.CommandText = "SELECT permit FROM User WHERE device_id = @device_id";
-                        mainForm.permit = (bool)command.ExecuteScalar();
                     }
                     else
                     {
                         command.CommandText = "INSERT INTO User VALUES (@device_id, @permit, @os, @continent, @country, @region, @date)";
                         command.ExecuteNonQuery();
+                    }
 
-                        command.CommandText = "INSERT INTO User_Logs VALUES (@device_id, @app_id, @app_version, @date, @date, @bedrock_version + \", \" + @education_version)";
+                    // User_Logs (UPDATE)
+                    command.CommandText = "SELECT * FROM User_Logs WHERE device_id = @device_id";
+                    if (command.ExecuteScalar() != null)
+                    {
+                        command.CommandText = "UPDATE User_Logs SET app_version = @app_version, last_used = @date, note = CONCAT_WS(' | ', IFNULL(@bedrock_version, '0'), IFNULL(@education_win64_version, '0'), IFNULL(@education_win32_version, '0')) WHERE device_id = @device_id";
                         command.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        command.CommandText = "INSERT INTO User_Logs VALUES (@device_id, @app_id, @app_version, @date, @date, CONCAT_WS(' | ', IFNULL(@bedrock_version, '0'), IFNULL(@education_win64_version, '0'), IFNULL(@education_win32_version, '0')))";
+                        command.ExecuteNonQuery();
+                    }
+
+                    // return permit
+                    command.CommandText = "SELECT permit FROM User WHERE device_id = @device_id";
+                    mainForm.permit = (bool)command.ExecuteScalar();
+
+                    if (mainForm.permit == true)
+                    {
+                        // ME_Pointer_Win64 (GET)
+                        command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_win64_version";
+                        mainForm.education_win64_pointer = (string)command.ExecuteScalar();
+
+                        // ME_Pointer_Win32 (GET)
+                        command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win32 WHERE education_version = @education_win32_version";
+                        mainForm.education_win32_pointer = (string)command.ExecuteScalar();
                     }
 
                     textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region;
@@ -114,7 +131,7 @@ namespace Minecraft_Bedrock_Launcher
             }
             catch
             {
-                textBox1.Text = "No Internet Connection";
+                textBox1.Text = "No Internet Connection\n";
             }
         }
 
