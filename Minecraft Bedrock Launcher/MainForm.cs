@@ -30,7 +30,7 @@ namespace Minecraft_Bedrock_Launcher
 
         public bool permit = false;
         bool flag_animation = true;
-        string run_mode;
+        string run_mode = "Minecraft Bedrock";
         bool run_status = false;
 
         public MainForm()
@@ -53,8 +53,7 @@ namespace Minecraft_Bedrock_Launcher
 
             GetClientVersion();
 
-            if (bedrock_version != null) run_mode = "Minecraft Bedrock";
-            else if (education_win64_version != null) run_mode = "Minecraft Education (Win64)";
+            if (education_win64_version != null) run_mode = "Minecraft Education (Win64)";
             else if (education_win32_version != null) run_mode = "Minecraft Education (Win32)";
         }
 
