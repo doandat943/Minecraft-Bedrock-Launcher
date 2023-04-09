@@ -1,2 +1,2 @@
-intro:false
-verify_client:false
+intro:true
+verify_client:true

@@ -57,7 +57,6 @@ namespace Minecraft_Bedrock_Launcher
                     axWindowsMediaPlayer.Ctlenabled = false;
                     axWindowsMediaPlayer.URL = "https://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
                 }
-                if (config.Contains("verify_client:false")) permit = true;
             }
 
             GetClientVersion();
@@ -286,7 +285,7 @@ namespace Minecraft_Bedrock_Launcher
 
         void StopProcess()
         {
-            String[] list = new String[] { "Minecraft.Windows", "WinStore.App", "GameBar", "RuntimeBroker", "MBL.Helper_x64" };
+            String[] list = new String[] { "Minecraft.Windows", "WinStore.App", "GameBar", "RuntimeBroker", "MBL.Helper_x64", "MBL.Helper_x86" };
 
             foreach (string process_name in list)
             {
@@ -313,7 +312,6 @@ namespace Minecraft_Bedrock_Launcher
         {
             Main_Button.Text = "Stop";
             if (run_status == false) StopProcess();
-
             if (run_mode == "Minecraft Bedrock")
             {
                 RunCommand("takeown /f " + original_path);
