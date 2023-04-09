@@ -336,7 +336,7 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 Process.Start("explorer", "minecraftedu:");
                 Thread.Sleep(1000);
-                if (ToggleSwitch.Checked == true) RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true || run_status == true) RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
             }
             else if (run_mode == "Minecraft Education (Win32)")
             {
@@ -346,7 +346,7 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 Process.Start(education_win32_path);
                 Thread.Sleep(1000);
-                if (ToggleSwitch.Checked == true) RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true || run_status == true) RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
             }
 
             Thread.Sleep(1000);
