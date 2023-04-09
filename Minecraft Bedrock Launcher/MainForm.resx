@@ -161,6 +161,18 @@
         x9IAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="ToggleSwitch.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACMAAAASCAYAAADR/2dRAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFjSURBVEhLxVahTgNBEF2JROJAk84en4EiSCSGBMkflITO
+        NgGHwFeT4LDYSiSOBAtN2guFu70Tx7y9DQE6QdDeMslT93b2Zfbt2zNazc+3Nzzbg5p7F/XQ3lfONssC
+        fWpHV35Ah8Uw24pb/V7+jI4qtpPKUe6VpssA/QSv3tHUc3Yat1yspp+t12zHQp5pjVYNmdBc9npQpwQh
+        2qLOwfTU9DfXooz2aFJN5CcKR4V46TIIgVlbj+jkFPBMEz/Idkw1sMdiqDeNlAowNm6uKR2NZDIqKRVa
+        MXZs5Ao/aoTUkNN5N+LmF+1jash0aiPmudU+pgYyB545EUGlRkiF4Bl5KgyulIj5l4z5BNtZyb39kDUI
+        HYSPSkyDuyAEhThGLCuk7sGUI3ijlLbCcTl6LpkqddGKAZ9AiHh2L0r4Xni5hXgj2TPtNggpR8gtTESr
+        wtldJDOum97srwgBe40ft7jVlzLmA38V8nsngk1XAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEA398AAAEAIACQIQMAFgAAACgAAADfAAAAvgEAAAEAIAAAAAAAaCEDAMMOAADDDgAAAAAAAAAA
@@ -3589,10 +3601,7 @@
   <metadata name="DragControl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>140, 17</value>
   </metadata>
-  <metadata name="Flag.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="Timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>259, 17</value>
-  </metadata>
-  <metadata name="RefreshControl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>346, 17</value>
   </metadata>
 </root>

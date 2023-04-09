@@ -51,6 +51,9 @@
     <Reference Include="Bunifu.UI.WinForms.BunifuButton">
       <HintPath>..\..\..\..\..\..\..\PPF\(Plugin)\Bunifu UI WinForms\Bunifu.UI.WinForms.BunifuButton.dll</HintPath>
     </Reference>
+    <Reference Include="Bunifu.UI.WinForms.ToggleSwitch">
+      <HintPath>..\..\..\..\..\..\..\PPF\(Plugin)\Bunifu UI WinForms\Bunifu.UI.WinForms.ToggleSwitch.dll</HintPath>
+    </Reference>
     <Reference Include="Bunifu_UI_v1.5.3">
       <HintPath>..\..\..\..\..\..\..\PPF\(Plugin)\Bunifu UI WinForms\Bunifu_UI_v1.5.3.dll</HintPath>
     </Reference>

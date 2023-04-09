@@ -94,21 +94,19 @@ namespace Minecraft_Bedrock_Launcher
                         command.ExecuteNonQuery();
                     }
 
+                    // ME_Pointer_Win64 (GET)
+                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_win64_version";
+                    mainForm.education_win64_pointer = (string)command.ExecuteScalar();
+
+                    // ME_Pointer_Win32 (GET)
+                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win32 WHERE education_version = @education_win32_version";
+                    mainForm.education_win32_pointer = (string)command.ExecuteScalar();
+
                     // return permit
                     command.CommandText = "SELECT permit FROM User WHERE device_id = @device_id";
                     mainForm.permit = (bool)command.ExecuteScalar();
 
-                    if (mainForm.permit == true)
-                    {
-                        // ME_Pointer_Win64 (GET)
-                        command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_win64_version";
-                        mainForm.education_win64_pointer = (string)command.ExecuteScalar();
-
-                        // ME_Pointer_Win32 (GET)
-                        command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win32 WHERE education_version = @education_win32_version";
-                        mainForm.education_win32_pointer = (string)command.ExecuteScalar();
-                    }
-
+                    // send to ui
                     textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region;
 
                     string temp;

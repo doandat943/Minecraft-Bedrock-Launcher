@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
+            Bunifu.ToggleSwitch.ToggleState toggleState1 = new Bunifu.ToggleSwitch.ToggleState();
+            Bunifu.ToggleSwitch.ToggleState toggleState2 = new Bunifu.ToggleSwitch.ToggleState();
+            Bunifu.ToggleSwitch.ToggleState toggleState3 = new Bunifu.ToggleSwitch.ToggleState();
             this.GradientPanel = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.Minimize_Button = new Bunifu.Framework.UI.BunifuImageButton();
             this.Logo = new System.Windows.Forms.PictureBox();
@@ -39,15 +42,18 @@
             this.ElipseControl = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.DragControl = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.Main_Button = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
-            this.Flag = new System.Windows.Forms.Timer(this.components);
-            this.RefreshControl = new System.Windows.Forms.Timer(this.components);
+            this.Timer = new System.Windows.Forms.Timer(this.components);
             this.axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
+            this.ToggleSwitch = new Bunifu.ToggleSwitch.BunifuToggleSwitch();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.GradientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Minimize_Button)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Close_Button)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Country_Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            this.pictureBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // GradientPanel
@@ -172,7 +178,7 @@
             this.Main_Button.IdleIconLeftImage = null;
             this.Main_Button.IdleIconRightImage = null;
             this.Main_Button.IndicateFocus = false;
-            this.Main_Button.Location = new System.Drawing.Point(295, 360);
+            this.Main_Button.Location = new System.Drawing.Point(295, 341);
             this.Main_Button.Name = "Main_Button";
             this.Main_Button.onHoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(150)))), ((int)(((byte)(65)))));
             this.Main_Button.onHoverState.BorderRadius = 10;
@@ -205,16 +211,11 @@
             this.Main_Button.UseDefaultRadiusAndThickness = true;
             this.Main_Button.Click += new System.EventHandler(this.Main_Button_Click);
             // 
-            // Flag
+            // Timer
             // 
-            this.Flag.Enabled = true;
-            this.Flag.Interval = 1000;
-            this.Flag.Tick += new System.EventHandler(this.Flag_Tick);
-            // 
-            // RefreshControl
-            // 
-            this.RefreshControl.Enabled = true;
-            this.RefreshControl.Tick += new System.EventHandler(this.RefreshControl_Tick);
+            this.Timer.Enabled = true;
+            this.Timer.Interval = 1000;
+            this.Timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // axWindowsMediaPlayer
             // 
@@ -226,28 +227,83 @@
             this.axWindowsMediaPlayer.TabIndex = 2;
             this.axWindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer_PlayStateChange);
             // 
+            // ToggleSwitch
+            // 
+            this.ToggleSwitch.Animation = 5;
+            this.ToggleSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.ToggleSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ToggleSwitch.BackgroundImage")));
+            this.ToggleSwitch.Checked = true;
+            this.ToggleSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ToggleSwitch.InnerCirclePadding = 3;
+            this.ToggleSwitch.Location = new System.Drawing.Point(383, 401);
+            this.ToggleSwitch.Name = "ToggleSwitch";
+            this.ToggleSwitch.Size = new System.Drawing.Size(35, 18);
+            this.ToggleSwitch.TabIndex = 3;
+            toggleState1.BackColor = System.Drawing.Color.Empty;
+            toggleState1.BackColorInner = System.Drawing.Color.Empty;
+            toggleState1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(0)))), ((int)(((byte)(140)))));
+            toggleState1.BorderColorInner = System.Drawing.Color.Empty;
+            toggleState1.BorderRadius = 1;
+            toggleState1.BorderRadiusInner = 1;
+            toggleState1.BorderThickness = 1;
+            toggleState1.BorderThicknessInner = 1;
+            this.ToggleSwitch.ToggleStateDisabled = toggleState1;
+            toggleState2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(179)))), ((int)(((byte)(46)))));
+            toggleState2.BackColorInner = System.Drawing.Color.White;
+            toggleState2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(179)))), ((int)(((byte)(46)))));
+            toggleState2.BorderColorInner = System.Drawing.Color.White;
+            toggleState2.BorderRadius = 17;
+            toggleState2.BorderRadiusInner = 11;
+            toggleState2.BorderThickness = 1;
+            toggleState2.BorderThicknessInner = 1;
+            this.ToggleSwitch.ToggleStateOff = toggleState2;
+            toggleState3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(134)))), ((int)(((byte)(46)))));
+            toggleState3.BackColorInner = System.Drawing.Color.White;
+            toggleState3.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(134)))), ((int)(((byte)(46)))));
+            toggleState3.BorderColorInner = System.Drawing.Color.White;
+            toggleState3.BorderRadius = 17;
+            toggleState3.BorderRadiusInner = 11;
+            toggleState3.BorderThickness = 1;
+            toggleState3.BorderThicknessInner = 1;
+            this.ToggleSwitch.ToggleStateOn = toggleState3;
+            this.ToggleSwitch.Value = true;
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Controls.Add(this.Main_Button);
+            this.pictureBox.Controls.Add(this.ToggleSwitch);
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Image = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(800, 450);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox.TabIndex = 4;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseClick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.axWindowsMediaPlayer);
-            this.Controls.Add(this.Main_Button);
             this.Controls.Add(this.GradientPanel);
+            this.Controls.Add(this.pictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Minecraft Bedrock Launcher";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseClick);
             this.GradientPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Minimize_Button)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Close_Button)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Country_Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            this.pictureBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -262,9 +318,10 @@
         private Bunifu.Framework.UI.BunifuImageButton Close_Button;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton Main_Button;
         private Bunifu.Framework.UI.BunifuImageButton Minimize_Button;
-        private System.Windows.Forms.Timer Flag;
-        private System.Windows.Forms.Timer RefreshControl;
+        private System.Windows.Forms.Timer Timer;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
+        private Bunifu.ToggleSwitch.BunifuToggleSwitch ToggleSwitch;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }
 

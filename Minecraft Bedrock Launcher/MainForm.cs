@@ -30,7 +30,7 @@ namespace Minecraft_Bedrock_Launcher
 
         public bool permit = false;
         bool flag_animation = true;
-        string run_mode = "Minecraft Bedrock";
+        string run_mode;
         bool run_status = false;
 
         public MainForm()
@@ -38,23 +38,35 @@ namespace Minecraft_Bedrock_Launcher
             InitializeComponent();
 
             //
+            string config = "config.txt";
+            if (File.Exists(config))
+            {
+                config = File.ReadAllText(config);
+                if (!config.Contains("intro:false"))
+                {
+                    //
+                    Main_Button.Visible = false;
+                    ToggleSwitch.Visible = false;
+                    Close_Button.Enabled = false;
+                    Logo.Enabled = false;
 
-            Main_Button.Visible = false;
-            Close_Button.Enabled = false;
-            Logo.Enabled = false;
-
-            axWindowsMediaPlayer.Dock = DockStyle.Fill;
-            axWindowsMediaPlayer.uiMode = "none";
-            axWindowsMediaPlayer.enableContextMenu = false;
-            axWindowsMediaPlayer.Ctlenabled = false;
-            axWindowsMediaPlayer.URL = "https://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
-
-            //
+                    //
+                    axWindowsMediaPlayer.Dock = DockStyle.Fill;
+                    axWindowsMediaPlayer.uiMode = "none";
+                    axWindowsMediaPlayer.enableContextMenu = false;
+                    axWindowsMediaPlayer.Ctlenabled = false;
+                    axWindowsMediaPlayer.URL = "https://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
+                }
+                if (config.Contains("verify_client:false")) permit = true;
+            }
 
             GetClientVersion();
 
+            run_mode = "Minecraft Bedrock";
             if (education_win64_version != null) run_mode = "Minecraft Education (Win64)";
             else if (education_win32_version != null) run_mode = "Minecraft Education (Win32)";
+
+            RefreshMode();
         }
 
         private void axWindowsMediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
@@ -62,6 +74,7 @@ namespace Minecraft_Bedrock_Launcher
             if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
             {
                 Main_Button.Visible = true;
+                ToggleSwitch.Visible = true;
                 Close_Button.Enabled = true;
                 Logo.Enabled = true;
 
@@ -75,7 +88,7 @@ namespace Minecraft_Bedrock_Launcher
             if (run_status == true) Stop_Bypass();
         }
 
-        private void MainForm_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && permit == true)
             {
@@ -135,29 +148,13 @@ namespace Minecraft_Bedrock_Launcher
             else if (itemTag == "Switch")
             {
                 if (run_status == true) Stop_Bypass();
-                GetClientVersion();
 
                 if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education (Win64)";
                 else if (run_mode == "Minecraft Education (Win64)") run_mode = "Minecraft Education (Win32)";
                 else if (run_mode == "Minecraft Education (Win32)") run_mode = "Minecraft Bedrock";
 
-                if (run_mode == "Minecraft Bedrock")
-                {
-                    if (bedrock_version == null) Main_Button.Text = "Install Minecraft";
-                    else Main_Button.Text = "Start";
-                }
-                else if (run_mode == "Minecraft Education (Win64)")
-                {
-                    if (education_win64_version == null) Main_Button.Text = "Install Minecraft";
-                    else if (education_win64_pointer == "") Main_Button.Text = "Not Support";
-                    else Main_Button.Text = "Start";
-                }
-                else if (run_mode == "Minecraft Education (Win32)")
-                {
-                    if (education_win32_version == null) Main_Button.Text = "Install Minecraft";
-                    else if (education_win32_pointer == "") Main_Button.Text = "Not Support";
-                    else Main_Button.Text = "Start";
-                }
+                GetClientVersion();
+                RefreshMode();
             }
         }
 
@@ -182,22 +179,15 @@ namespace Minecraft_Bedrock_Launcher
             Show_AboutForm();
         }
 
-        private void Flag_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (flag_animation == true)
             {
                 if (Country_Icon.Image == vietnam_flag) Country_Icon.Image = vietnam_government_flag;
                 else Country_Icon.Image = vietnam_flag;
             }
-        }
 
-        private void RefreshControl_Tick(object sender, EventArgs e)
-        {
-            if (permit == true)
-            {
-                if (Main_Button.Text == "Active") Main_Button.Text = "Start";
-                else if (run_status == true && Process.GetProcessesByName("Minecraft.Windows").Length == 0) Stop_Bypass();
-            }
+            if (run_status == true && Process.GetProcessesByName("Minecraft.Windows").Length == 0) Stop_Bypass();
         }
 
         private void Main_Button_Click(object sender, EventArgs e)
@@ -213,6 +203,9 @@ namespace Minecraft_Bedrock_Launcher
             AboutForm aboutForm = new AboutForm();
             aboutForm.StartPosition = FormStartPosition.CenterParent;
             aboutForm.ShowDialog();
+
+            //
+            if (permit == true) Main_Button.Text = "Start";
         }
 
         void Install_Minecraft()
@@ -225,7 +218,6 @@ namespace Minecraft_Bedrock_Launcher
         void GetClientVersion()
         {
             // Get Minecraft Version
-
             foreach (string subFolder in Directory.GetDirectories(@"C:\Program Files\WindowsApps"))
             {
                 if (subFolder.Contains("Microsoft.MinecraftUWP"))
@@ -237,8 +229,31 @@ namespace Minecraft_Bedrock_Launcher
                     education_win64_version = GetFileVersion(subFolder + @"\Minecraft.Windows.exe");
                 }
             }
-
             education_win32_version = GetFileVersion(education_win32_path);
+        }
+
+        void RefreshMode()
+        {
+            if (permit == true)
+            {
+                if (run_mode == "Minecraft Bedrock")
+                {
+                    if (bedrock_version == null) Main_Button.Text = "Install Minecraft";
+                    else Main_Button.Text = "Start";
+                }
+                else if (run_mode == "Minecraft Education (Win64)")
+                {
+                    if (education_win64_version == null) Main_Button.Text = "Install Minecraft";
+                    else if (education_win64_pointer == "") Main_Button.Text = "Not Support";
+                    else Main_Button.Text = "Start";
+                }
+                else if (run_mode == "Minecraft Education (Win32)")
+                {
+                    if (education_win32_version == null) Main_Button.Text = "Install Minecraft";
+                    else if (education_win32_pointer == "") Main_Button.Text = "Not Support";
+                    else Main_Button.Text = "Start";
+                }
+            }
         }
 
         string GetFileVersion(string filePath)
@@ -321,7 +336,7 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 Process.Start("explorer", "minecraftedu:");
                 Thread.Sleep(1000);
-                RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true) RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
             }
             else if (run_mode == "Minecraft Education (Win32)")
             {
@@ -331,7 +346,7 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 Process.Start(education_win32_path);
                 Thread.Sleep(1000);
-                RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true) RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
             }
 
             Thread.Sleep(1000);
