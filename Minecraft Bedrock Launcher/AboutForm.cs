@@ -1,4 +1,6 @@
-﻿using MySqlConnector;
+﻿using AxWMPLib;
+using Microsoft.VisualBasic.Logging;
+using MySqlConnector;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Minecraft_Bedrock_Launcher
 {
@@ -57,7 +60,6 @@ namespace Minecraft_Bedrock_Launcher
 
                     command.CommandText = "SELECT app_hash FROM App_Info WHERE app_id = @app_id and app_version = @app_version";
                     string app_hash = (string)command.ExecuteScalar();
-                    command.Parameters.AddWithValue("@app_hash", app_hash);
 
                     // App_Info (GET) --> Lastest
 
@@ -81,6 +83,57 @@ namespace Minecraft_Bedrock_Launcher
                         command.ExecuteNonQuery();
                     }
 
+                    // ME_Pointer_Win64 (GET)
+                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_win64_version";
+                    mainForm.education_win64_pointer = (string)command.ExecuteScalar();
+
+                    // ME_Pointer_Win32 (GET)
+                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win32 WHERE education_version = @education_win32_version";
+                    mainForm.education_win32_pointer = (string)command.ExecuteScalar();
+
+                    // Permit (GET)
+                    command.CommandText = "SELECT permit FROM User WHERE device_id = @device_id";
+                    mainForm.permit = (bool)command.ExecuteScalar();
+
+                    // Show on UI
+
+                    string note1 = null;
+                    string note2 = null;
+
+                    string config_file = "config.txt";
+                    if (File.Exists(config_file)) config_file = File.ReadAllText(config_file);
+
+                    if (config_file.Contains("developer_mode:true"))
+                    {
+                        mainForm.permit = true;
+                        note1 = "DEV";
+                        note2 = "This app is in development mode";
+
+                        command.Parameters.AddWithValue("@app_hash", mainForm.ComputeSHA256HashOfFile(Application.ExecutablePath));
+                        command.CommandText = "Update App_Info Set app_hash = @app_hash WHERE app_id = @app_id and app_version = @app_version";
+                        command.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        if (lastest_version != app_version)
+                        {
+                            Main_Button.Text = "Update";
+                            note1 = "Outdated";
+                        }
+                        else note1 = "Lastest";
+
+                        if (!mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash))
+                        {
+                            Main_Button.Text = "Update";
+                            note2 = "This app may be corrupted or tampered with";
+                        }
+                        else note2 = "This app is verified as genuine";
+                    }
+                    
+                    textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region
+                    + "\r\n-----------------------------------------------" + "\r\nApplication: " + app_name + "\r\nVersion: " + app_version + " (" + note1 + ")\r\nDeveloper: @doandat943\r\nWebsite: cloud.kamvdta.xyz\r\nEmail: doandat943@kamvdta.xyz"
+                    + "\r\n-----------------------------------------------" + "\r\nNote: " + note2 + ".\r\nLastest Version: " + lastest_version + " (" + release_date.ToString("yyyy/MM/dd") + ")";
+
                     // User_Logs (UPDATE)
                     command.CommandText = "SELECT * FROM User_Logs WHERE device_id = @device_id";
                     if (command.ExecuteScalar() != null)
@@ -93,43 +146,11 @@ namespace Minecraft_Bedrock_Launcher
                         command.CommandText = "INSERT INTO User_Logs VALUES (@device_id, @app_id, @app_version, @date, @date, CONCAT_WS(' | ', IFNULL(@bedrock_version, '0'), IFNULL(@education_win64_version, '0'), IFNULL(@education_win32_version, '0')))";
                         command.ExecuteNonQuery();
                     }
-
-                    // ME_Pointer_Win64 (GET)
-                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win64 WHERE education_version = @education_win64_version";
-                    mainForm.education_win64_pointer = (string)command.ExecuteScalar();
-
-                    // ME_Pointer_Win32 (GET)
-                    command.CommandText = "SELECT education_pointer FROM ME_Pointer_Win32 WHERE education_version = @education_win32_version";
-                    mainForm.education_win32_pointer = (string)command.ExecuteScalar();
-
-                    // return permit
-                    command.CommandText = "SELECT permit FROM User WHERE device_id = @device_id";
-                    mainForm.permit = (bool)command.ExecuteScalar();
-
-                    // send to ui
-                    textBox1.Text = "UUID: " + device_id + "\r\nStatus: " + (mainForm.permit ? "Activated" : "Waiting-For-Active") + "\r\nOS: " + os + "\r\nContinent: " + continent + " - " + country + "\r\nRegion: " + region;
-
-                    string temp;
-                    if (lastest_version != app_version)
-                    {
-                        Main_Button.Text = "Update";
-                        temp = " (Outdated)";
-                    }
-                    else temp = " (Lastest)";
-                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nApplication: " + app_name + "\r\nVersion: " + app_version + temp + "\r\nDeveloper: @doandat943\r\nWebsite: cloud.kamvdta.xyz\r\nEmail: doandat943@kamvdta.xyz";
-
-                    if (!mainForm.VerifyFileIntegrity(Application.ExecutablePath, app_hash))
-                    {
-                        Main_Button.Text = "Update";
-                        temp = "This app may be corrupted or tampered with.";
-                    }
-                    else temp = "This app is verified as genuine.";
-                    textBox1.Text += "\r\n-----------------------------------------------" + "\r\nNote: " + temp + "\r\nLastest Version: " + lastest_version + " (" + release_date.ToString("yyyy/MM/dd") + ")";
                 }
             }
-            catch
+            catch (Exception e)
             {
-                textBox1.Text = "No Internet Connection\n";
+                textBox1.Text = "No Internet Connection\n" + e;
             }
         }
 
@@ -137,7 +158,7 @@ namespace Minecraft_Bedrock_Launcher
         {
             if (Main_Button.Text == "Update")
             {
-                string updater_path = Path.GetTempPath() + Path.GetRandomFileName().Replace(".", "") + ".bat";
+                string updater_path = Path.GetTempPath() + Path.GetRandomFileName().Replace(".", null) + ".bat";
                 File.WriteAllText(updater_path, Properties.Resources.updater);
 
                 Process process = new Process();
@@ -152,14 +173,12 @@ namespace Minecraft_Bedrock_Launcher
 
         string GetDeviceID()
         {
-            string deviceID = "";
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystemProduct");
             foreach (ManagementObject mo in searcher.Get())
             {
-                deviceID = mo["UUID"].ToString();
-                break;
+                return mo["UUID"].ToString();
             }
-            return deviceID;
+            return null;
         }
 
         string GetOSInfo()

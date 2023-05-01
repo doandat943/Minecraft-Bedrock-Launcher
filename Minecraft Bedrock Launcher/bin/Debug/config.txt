@@ -1,2 +1,2 @@
-intro:true
-verify_client:true
+intro:false
+developer_mode:true

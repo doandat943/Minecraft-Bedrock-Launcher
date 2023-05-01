@@ -28,8 +28,9 @@ namespace Minecraft_Bedrock_Launcher
         public string education_win32_pointer;
         string education_win32_path = @"C:\Program Files (x86)\Microsoft Studios\Minecraft Education Edition\Minecraft.Windows.exe";
 
-        public bool permit = false;
         bool flag_animation = true;
+        public bool permit = false;
+
         string run_mode;
         bool run_status = false;
 
@@ -38,11 +39,11 @@ namespace Minecraft_Bedrock_Launcher
             InitializeComponent();
 
             //
-            string config = "config.txt";
-            if (File.Exists(config))
+            string config_file = "config.txt";
+            if (File.Exists(config_file))
             {
-                config = File.ReadAllText(config);
-                if (!config.Contains("intro:false"))
+                config_file = File.ReadAllText(config_file);
+                if (config_file.Contains("intro:true"))
                 {
                     //
                     Main_Button.Visible = false;
@@ -55,7 +56,7 @@ namespace Minecraft_Bedrock_Launcher
                     axWindowsMediaPlayer.uiMode = "none";
                     axWindowsMediaPlayer.enableContextMenu = false;
                     axWindowsMediaPlayer.Ctlenabled = false;
-                    axWindowsMediaPlayer.URL = "https://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
+                    axWindowsMediaPlayer.URL = "http://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
                 }
             }
 
@@ -267,6 +268,11 @@ namespace Minecraft_Bedrock_Launcher
 
         public bool VerifyFileIntegrity(string filePath, string expectedHash)
         {
+            return ComputeSHA256HashOfFile(filePath).Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public string ComputeSHA256HashOfFile(string filePath)
+        {
             if (File.Exists(filePath))
             {
                 using (var sha256 = SHA256.Create())
@@ -274,13 +280,11 @@ namespace Minecraft_Bedrock_Launcher
                     using (var stream = File.OpenRead(filePath))
                     {
                         var hash = sha256.ComputeHash(stream);
-                        var hashString = BitConverter.ToString(hash).Replace("-", null);
-
-                        return hashString.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
+                        return BitConverter.ToString(hash).Replace("-", null);
                     }
                 }
             }
-            else return false;
+            return null;
         }
 
         void StopProcess()
@@ -330,21 +334,29 @@ namespace Minecraft_Bedrock_Launcher
             {
                 using (WebClient client = new WebClient())
                 {
-                    client.DownloadFile("https://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
+                    client.DownloadFile("http://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
                 }
                 Process.Start("explorer", "minecraftedu:");
                 Thread.Sleep(1000);
-                if (ToggleSwitch.Checked == true || run_status == true) RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true || run_status == true)
+                {
+                    RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 8");
+                    RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
+                }
             }
             else if (run_mode == "Minecraft Education (Win32)")
             {
                 using (WebClient client = new WebClient())
                 {
-                    client.DownloadFile("https://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x86.exe", "MBL.Helper_x86.exe");
+                    client.DownloadFile("http://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x86.exe", "MBL.Helper_x86.exe");
                 }
                 Process.Start(education_win32_path);
                 Thread.Sleep(1000);
-                if (ToggleSwitch.Checked == true || run_status == true) RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
+                if (ToggleSwitch.Checked == true || run_status == true)
+                {
+                    RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 8");
+                    RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
+                }
             }
 
             Thread.Sleep(1000);
