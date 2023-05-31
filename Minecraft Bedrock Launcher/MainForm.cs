@@ -334,7 +334,7 @@ namespace Minecraft_Bedrock_Launcher
             {
                 using (WebClient client = new WebClient())
                 {
-                    client.DownloadFile("http://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
+                    client.DownloadFile("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
                 }
                 Process.Start("explorer", "minecraftedu:");
                 Thread.Sleep(1000);
@@ -348,7 +348,7 @@ namespace Minecraft_Bedrock_Launcher
             {
                 using (WebClient client = new WebClient())
                 {
-                    client.DownloadFile("http://cloud.kamvdta.xyz:2023/application/MBL/MBL.Helper_x86.exe", "MBL.Helper_x86.exe");
+                    client.DownloadFile("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/MBL.Helper_x86.exe", "MBL.Helper_x86.exe");
                 }
                 Process.Start(education_win32_path);
                 Thread.Sleep(1000);
