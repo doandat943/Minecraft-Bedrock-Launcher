@@ -37,29 +37,21 @@ namespace Minecraft_Bedrock_Launcher
         public MainForm()
         {
             InitializeComponent();
+            
+            //
+            Main_Button.Visible = false;
+            ToggleSwitch.Visible = false;
+            Close_Button.Enabled = false;
+            Logo.Enabled = false;
 
             //
-            string config_file = "config.txt";
-            if (File.Exists(config_file))
-            {
-                config_file = File.ReadAllText(config_file);
-                if (config_file.Contains("intro:true"))
-                {
-                    //
-                    Main_Button.Visible = false;
-                    ToggleSwitch.Visible = false;
-                    Close_Button.Enabled = false;
-                    Logo.Enabled = false;
-
-                    //
-                    axWindowsMediaPlayer.Dock = DockStyle.Fill;
-                    axWindowsMediaPlayer.uiMode = "none";
-                    axWindowsMediaPlayer.enableContextMenu = false;
-                    axWindowsMediaPlayer.Ctlenabled = false;
-                    axWindowsMediaPlayer.URL = "http://cloud.kamvdta.xyz:2023/application/MBL/Intro_MBL.mp4";
-                }
-            }
-
+            axWindowsMediaPlayer.Dock = DockStyle.Fill;
+            axWindowsMediaPlayer.uiMode = "none";
+            axWindowsMediaPlayer.enableContextMenu = false;
+            axWindowsMediaPlayer.Ctlenabled = false;
+            axWindowsMediaPlayer.URL = "http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/Intro_MBL.mp4";
+            
+            //
             GetClientVersion();
 
             run_mode = "Minecraft Bedrock";
@@ -203,9 +195,8 @@ namespace Minecraft_Bedrock_Launcher
             AboutForm aboutForm = new AboutForm();
             aboutForm.StartPosition = FormStartPosition.CenterParent;
             aboutForm.ShowDialog();
-
-            //
-            if (permit == true) Main_Button.Text = "Start";
+            
+            if (permit) Main_Button.Text = "Start";
         }
 
         void Install_Minecraft()
@@ -234,7 +225,7 @@ namespace Minecraft_Bedrock_Launcher
 
         void RefreshMode()
         {
-            if (permit == true)
+            if (permit)
             {
                 if (run_mode == "Minecraft Bedrock")
                 {
