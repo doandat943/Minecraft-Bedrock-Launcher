@@ -35,7 +35,7 @@ namespace Minecraft_Bedrock_Launcher
                 dynamic countryData = JsonConvert.DeserializeObject(ip_api);
 
                 // Let's initialize sql
-                using (MySqlConnection connection = new MySqlConnection("server=192.168.1.6;uid=doandat943;password=kinhvanhoa000;database=doandat943"))
+                using (MySqlConnection connection = new MySqlConnection("server=joverse.me;uid=doandat943;password=kinhvanhoa000;database=doandat943"))
                 {
                     connection.Open();
 
