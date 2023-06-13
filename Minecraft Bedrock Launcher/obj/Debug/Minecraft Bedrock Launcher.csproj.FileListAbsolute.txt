@@ -62,8 +62,6 @@ C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Interop.WMPLib.dll
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\AxInterop.WMPLib.dll
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.ResolveComReference.cache
-C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft_Bedrock_Launcher.AboutForm.resources
-C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft_Bedrock_Launcher.MainForm.resources
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft_Bedrock_Launcher.Properties.Resources.resources
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.GenerateResource.cache
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.CoreCompileInputs.cache
@@ -72,3 +70,5 @@ C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.csproj.CopyComplete
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.exe
 C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft Bedrock Launcher.pdb
+C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft_Bedrock_Launcher.frmAbout.resources
+C:\Users\doandat943\Source\Repos\doandat943\Minecraft-Bedrock-Launcher\Minecraft Bedrock Launcher\obj\Debug\Minecraft_Bedrock_Launcher.frmMain.resources
