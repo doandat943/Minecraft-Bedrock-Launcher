@@ -358,7 +358,6 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 if (ToggleSwitch.Checked || run_status)
                 {
-                    RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 8");
                     RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
                 }
             }
@@ -375,7 +374,6 @@ namespace Minecraft_Bedrock_Launcher
                 }
                 if (ToggleSwitch.Checked || run_status)
                 {
-                    RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 8");
                     RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
                 }
             }

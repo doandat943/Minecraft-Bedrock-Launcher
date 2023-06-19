@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAbout));
-            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
+            Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges4 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.ElipseControl = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.btnMain = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
@@ -44,7 +44,7 @@
             this.pbMain.Image = global::Minecraft_Bedrock_Launcher.Properties.Resources.Artworks;
             this.pbMain.Location = new System.Drawing.Point(0, 0);
             this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(220, 220);
+            this.pbMain.Size = new System.Drawing.Size(220, 221);
             this.pbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbMain.TabIndex = 0;
             this.pbMain.TabStop = false;
@@ -68,11 +68,11 @@
             this.btnMain.ColorContrastOnClick = 45;
             this.btnMain.ColorContrastOnHover = 45;
             this.btnMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            borderEdges1.BottomLeft = true;
-            borderEdges1.BottomRight = true;
-            borderEdges1.TopLeft = true;
-            borderEdges1.TopRight = true;
-            this.btnMain.CustomizableEdges = borderEdges1;
+            borderEdges4.BottomLeft = true;
+            borderEdges4.BottomRight = true;
+            borderEdges4.TopLeft = true;
+            borderEdges4.TopRight = true;
+            this.btnMain.CustomizableEdges = borderEdges4;
             this.btnMain.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnMain.DisabledBorderColor = System.Drawing.Color.Empty;
             this.btnMain.DisabledFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
@@ -126,11 +126,11 @@
             // 
             // txtMain
             // 
-            this.txtMain.Location = new System.Drawing.Point(230, 12);
+            this.txtMain.Location = new System.Drawing.Point(230, 11);
             this.txtMain.Multiline = true;
             this.txtMain.Name = "txtMain";
             this.txtMain.ReadOnly = true;
-            this.txtMain.Size = new System.Drawing.Size(258, 196);
+            this.txtMain.Size = new System.Drawing.Size(268, 198);
             this.txtMain.TabIndex = 2;
             // 
             // frmAbout
@@ -138,7 +138,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ClientSize = new System.Drawing.Size(500, 220);
+            this.ClientSize = new System.Drawing.Size(510, 221);
             this.Controls.Add(this.txtMain);
             this.Controls.Add(this.btnMain);
             this.Controls.Add(this.pbMain);
