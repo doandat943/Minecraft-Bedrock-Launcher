@@ -150,9 +150,19 @@ namespace Minecraft_Bedrock_Launcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Windows_ApplicationModel_Store {
+        internal static byte[] Windows_ApplicationModel_Store_x32 {
             get {
-                object obj = ResourceManager.GetObject("Windows_ApplicationModel_Store", resourceCulture);
+                object obj = ResourceManager.GetObject("Windows_ApplicationModel_Store_x32", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Windows_ApplicationModel_Store_x64 {
+            get {
+                object obj = ResourceManager.GetObject("Windows_ApplicationModel_Store_x64", resourceCulture);
                 return ((byte[])(obj));
             }
         }

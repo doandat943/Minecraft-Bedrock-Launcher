@@ -298,8 +298,9 @@
   <ItemGroup>
     <Content Include="minecraft_creeper.ico" />
     <Content Include="Resources\minecraft_bee.jpg" />
+    <None Include="Resources\Windows.ApplicationModel.Store_x64.dll" />
+    <None Include="Resources\Windows.ApplicationModel.Store_x32.dll" />
     <None Include="Resources\artworks.png" />
-    <None Include="Resources\Windows.ApplicationModel.Store.dll" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxWMPLib">

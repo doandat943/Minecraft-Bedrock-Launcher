@@ -18,9 +18,6 @@ namespace Minecraft_Bedrock_Launcher
         Bitmap vietnam_flag = Properties.Resources.vietnam_480px;
         Bitmap vietnam_government_flag = Properties.Resources.vietnam_government_480px;
 
-        string original_path = @"C:\Windows\System32\Windows.ApplicationModel.Store.dll";
-        string backup_path = @"C:\Windows\System32\Windows.ApplicationModel.Store.Common.dll";
-        string modified_dll_hash = "C1469DEA551C95D2C68EB42CEB37F020CB5B75D777E7083F24BF2E54AE2E4F55";
         string education_win32_path = @"C:\Program Files (x86)\Microsoft Studios\Minecraft Education Edition\Minecraft.Windows.exe";
 
         public string bedrock_version;
@@ -32,8 +29,8 @@ namespace Minecraft_Bedrock_Launcher
 
         public bool permit;
 
-        string run_mode;
-        bool run_status;
+        string current_mode;
+        bool current_status;
         bool flag_animation = true;
 
         public frmMain()
@@ -51,25 +48,26 @@ namespace Minecraft_Bedrock_Launcher
             axWindowsMediaPlayer.uiMode = "none";
             axWindowsMediaPlayer.enableContextMenu = false;
             axWindowsMediaPlayer.Ctlenabled = false;
-            axWindowsMediaPlayer.URL = "http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/Intro_MBL.mp4";
+            axWindowsMediaPlayer.stretchToFit = true;
+            axWindowsMediaPlayer.URL = @"C:\Users\doandat943\Downloads\Video\Armored Paws drop - Official Trailer.mp4";
 
             //
             GetClientVersion();
 
-            Dictionary<string, string> versions = new Dictionary<string, string>();
+            Dictionary<string, string> editions = new Dictionary<string, string>();
             if (bedrock_version != null)
             {
-                versions.Add(bedrock_version, "Minecraft Bedrock");
+                editions.Add(bedrock_version, "Minecraft Bedrock");
             }
             if (education_win64_version != null)
             {
-                versions.Add(education_win64_version, "Minecraft Education (Win64)");
+                editions.Add(education_win64_version, "Minecraft Education (Win64)");
             }
             if (education_win32_version != null)
             {
-                versions.Add(education_win32_version, "Minecraft Education (Win32)");
+                editions.Add(education_win32_version, "Minecraft Education (Win32)");
             }
-            run_mode = versions.FirstOrDefault().Value ?? "Minecraft Bedrock";
+            current_mode = editions.FirstOrDefault().Value ?? "Minecraft Bedrock";
 
             RefreshMode();
         }
@@ -90,7 +88,7 @@ namespace Minecraft_Bedrock_Launcher
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (run_status) StopBypass();
+            if (current_status) StopBypass();
         }
 
         private void pbMain_MouseClick(object sender, MouseEventArgs e)
@@ -99,7 +97,7 @@ namespace Minecraft_Bedrock_Launcher
             {
                 ContextMenuStrip ContextMenu = new ContextMenuStrip();
 
-                ToolStripMenuItem edition_option = new ToolStripMenuItem(run_mode);
+                ToolStripMenuItem edition_option = new ToolStripMenuItem(current_mode);
                 ToolStripMenuItem option1 = new ToolStripMenuItem("Change Local Gamertag");
                 ToolStripMenuItem option2 = new ToolStripMenuItem("Bypass");
                 ToolStripMenuItem switch_option = new ToolStripMenuItem("Switch");
@@ -112,8 +110,8 @@ namespace Minecraft_Bedrock_Launcher
                 option2.Click += new EventHandler(Option_Click);
                 switch_option.Click += new EventHandler(Option_Click);
 
-                if ((run_mode == "Minecraft Bedrock" && bedrock_version != null) || (run_mode == "Minecraft Education (Win64)" && education_win64_version != null) || (run_mode == "Minecraft Education (Win32)" && education_win32_version != null)) edition_option.DropDownItems.Add(option1);
-                if (((run_mode == "Minecraft Education (Win64)" && education_win64_version != null && education_win64_pointer != "") || (run_mode == "Minecraft Education (Win32)" && education_win32_version != null && education_win32_pointer != "")) && run_status) edition_option.DropDownItems.Add(option2);
+                if ((current_mode == "Minecraft Bedrock" && bedrock_version != null) || (current_mode == "Minecraft Education (Win64)" && education_win64_version != null) || (current_mode == "Minecraft Education (Win32)" && education_win32_version != null)) edition_option.DropDownItems.Add(option1);
+                if (((current_mode == "Minecraft Education (Win64)" && education_win64_version != null && education_win64_pointer != "") || (current_mode == "Minecraft Education (Win32)" && education_win32_version != null && education_win32_pointer != "")) && current_status) edition_option.DropDownItems.Add(option2);
                 ContextMenu.Items.Add(edition_option);
                 ContextMenu.Items.Add(switch_option);
                 ContextMenu.Show(this, new Point(e.X, e.Y));
@@ -128,9 +126,9 @@ namespace Minecraft_Bedrock_Launcher
             if (itemTag == "ChangeLocalGamertag")
             {
                 string path = null;
-                if (run_mode == "Minecraft Bedrock") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
-                else if (run_mode == "Minecraft Education (Win64)") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftEducationEdition_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
-                else if (run_mode == "Minecraft Education (Win32)") path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Minecraft Education Edition\games\com.mojang\minecraftpe\options.txt";
+                if (current_mode == "Minecraft Bedrock") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
+                else if (current_mode == "Minecraft Education (Win64)") path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Packages\Microsoft.MinecraftEducationEdition_8wekyb3d8bbwe\LocalState\games\com.mojang\minecraftpe\options.txt";
+                else if (current_mode == "Minecraft Education (Win32)") path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Minecraft Education Edition\games\com.mojang\minecraftpe\options.txt";
 
                 string content = File.ReadAllText(path);
                 Match match = Regex.Match(content, "mp_username:(.*)");
@@ -139,7 +137,7 @@ namespace Minecraft_Bedrock_Launcher
                 if (new_username != "")
                 {
                     File.WriteAllText(path, content.Replace("mp_username:" + old_username, "mp_username:" + new_username));
-                    if (run_status)
+                    if (current_status)
                     {
                         StopBypass();
                         StartBypass();
@@ -152,11 +150,11 @@ namespace Minecraft_Bedrock_Launcher
             }
             else if (itemTag == "Switch")
             {
-                if (run_status) StopBypass();
+                if (current_status) StopBypass();
 
-                if (run_mode == "Minecraft Bedrock") run_mode = "Minecraft Education (Win64)";
-                else if (run_mode == "Minecraft Education (Win64)") run_mode = "Minecraft Education (Win32)";
-                else if (run_mode == "Minecraft Education (Win32)") run_mode = "Minecraft Bedrock";
+                if (current_mode == "Minecraft Bedrock") current_mode = "Minecraft Education (Win64)";
+                else if (current_mode == "Minecraft Education (Win64)") current_mode = "Minecraft Education (Win32)";
+                else if (current_mode == "Minecraft Education (Win32)") current_mode = "Minecraft Bedrock";
 
                 GetClientVersion();
                 RefreshMode();
@@ -171,7 +169,7 @@ namespace Minecraft_Bedrock_Launcher
                 else pbFlag.Image = vietnam_flag;
             }
 
-            if (run_status && Process.GetProcessesByName("Minecraft.Windows").Length == 0) StopBypass();
+            if (current_status && Process.GetProcessesByName("Minecraft.Windows").Length == 0) StopBypass();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -214,9 +212,9 @@ namespace Minecraft_Bedrock_Launcher
 
         void GetMinecraft()
         {
-            if (run_mode == "Minecraft Bedrock") Process.Start("ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
-            else if (run_mode == "Minecraft Education (Win64)") Process.Start("ms-windows-store://pdp/?PFN=Microsoft.MinecraftEducationEdition_8wekyb3d8bbwe");
-            else if (run_mode == "Minecraft Education (Win32)") Process.Start("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/Archive/");
+            if (current_mode == "Minecraft Bedrock") Process.Start("ms-windows-store://pdp/?PFN=Microsoft.MinecraftUWP_8wekyb3d8bbwe");
+            else if (current_mode == "Minecraft Education (Win64)") Process.Start("ms-windows-store://pdp/?PFN=Microsoft.MinecraftEducationEdition_8wekyb3d8bbwe");
+            else if (current_mode == "Minecraft Education (Win32)") Process.Start("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/Archive/");
         }
 
         void GetClientVersion()
@@ -239,27 +237,27 @@ namespace Minecraft_Bedrock_Launcher
         {
             if (permit)
             {
-                if (run_mode == "Minecraft Bedrock")
+                if (current_mode == "Minecraft Bedrock")
                 {
                     if (bedrock_version == null) btnMain.Text = "Get Minecraft";
-                    else if (!run_status) btnMain.Text = "Start";
+                    else if (!current_status) btnMain.Text = "Start";
                 }
-                else if (run_mode == "Minecraft Education (Win64)")
+                else if (current_mode == "Minecraft Education (Win64)")
                 {
                     if (education_win64_version == null) btnMain.Text = "Get Minecraft";
                     else if (education_win64_pointer == null) btnMain.Text = "Not Support";
-                    else if (!run_status) btnMain.Text = "Start";
+                    else if (!current_status) btnMain.Text = "Start";
                 }
-                else if (run_mode == "Minecraft Education (Win32)")
+                else if (current_mode == "Minecraft Education (Win32)")
                 {
                     if (education_win32_version == null) btnMain.Text = "Get Minecraft";
                     else if (education_win32_pointer == null) btnMain.Text = "Not Support";
-                    else if (!run_status) btnMain.Text = "Start";
+                    else if (!current_status) btnMain.Text = "Start";
                 }
             }
             else
             {
-                if (run_status) StopBypass();
+                if (current_status) StopBypass();
                 btnMain.Text = "Active";
             }
         }
@@ -268,17 +266,18 @@ namespace Minecraft_Bedrock_Launcher
         {
             if (File.Exists(filePath))
             {
-                var versInfo = FileVersionInfo.GetVersionInfo(filePath);
-                return $"{versInfo.FileMajorPart}.{versInfo.FileMinorPart}.{versInfo.FileBuildPart}.{versInfo.FilePrivatePart}";
+                var verInfo = FileVersionInfo.GetVersionInfo(filePath);
+                return $"{verInfo.FileMajorPart}.{verInfo.FileMinorPart}.{verInfo.FileBuildPart}.{verInfo.FilePrivatePart}";
             }
             return null;
         }
 
-        public int VerifyFileIntegrity(string filePath, string expectedHash)
+        public bool VerifyFileIntegrity(string filePath, byte[] expectedHash)
         {
             string HashOfFile = ComputeSHA256HashOfFile(filePath);
-            if (HashOfFile == null) return -1;
-            return HashOfFile.Equals(expectedHash, StringComparison.OrdinalIgnoreCase) ? 1 : 0;
+            string HashOfResource = ComputeSHA256Hash(expectedHash);
+            if (HashOfFile == null) return false;
+            return HashOfFile.Equals(HashOfResource, StringComparison.OrdinalIgnoreCase);
         }
 
         public string ComputeSHA256HashOfFile(string filePath)
@@ -289,12 +288,22 @@ namespace Minecraft_Bedrock_Launcher
                 {
                     using (var stream = File.OpenRead(filePath))
                     {
-                        var hash = sha256.ComputeHash(stream);
-                        return BitConverter.ToString(hash).Replace("-", null);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, (int)stream.Length);
+                        return ComputeSHA256Hash(bytes);
                     }
                 }
             }
             return null;
+        }
+
+        public string ComputeSHA256Hash(byte[] bytes)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashBytes = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+            }
         }
 
         void StopProcess()
@@ -322,32 +331,64 @@ namespace Minecraft_Bedrock_Launcher
             process.WaitForExit();
         }
 
+        void BedrockBypass(bool on)
+        {
+            (string path, byte[] resource)[] windowsArray = new (string, byte[])[]
+            {
+                (@"C:\Windows\SysWOW64\Windows.ApplicationModel.Store.dll", Properties.Resources.Windows_ApplicationModel_Store_x64),
+                (@"C:\Windows\System32\Windows.ApplicationModel.Store.dll", Properties.Resources.Windows_ApplicationModel_Store_x32)
+            };
+
+            foreach (var winItem in windowsArray)
+            {
+                string original_path = winItem.path;
+                string backup_path = original_path + ".bak";
+                byte[] resourceBytes = winItem.resource;
+
+                if (on)
+                {
+                    RunCommand("takeown /f " + original_path);
+                    RunCommand("icacls " + original_path + " /GRANT ADMINISTRATORS:F");
+                    Thread.Sleep(1000);
+
+                    if (!VerifyFileIntegrity(original_path, winItem.resource))
+                    {
+                        File.Move(original_path, backup_path);
+                    }
+                    File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store_x32);
+                }
+                else
+                {
+                    if (VerifyFileIntegrity(original_path, winItem.resource))
+                    {
+                        File.Delete(original_path);
+                    }
+                    if (!VerifyFileIntegrity(backup_path, winItem.resource))
+                    {
+                        File.Move(backup_path, original_path);
+                    }
+                }
+            }
+        }
+
         void StartBypass()
         {
             btnMain.Text = "Stop";
-            if (!run_status)
+            if (!current_status)
             {
                 StopProcess();
                 Thread.Sleep(1000);
             }
 
-            if (run_mode == "Minecraft Bedrock")
+            if (current_mode == "Minecraft Bedrock")
             {
-                RunCommand("takeown /f " + original_path);
-                RunCommand("icacls " + original_path + " /GRANT ADMINISTRATORS:F");
-                Thread.Sleep(1000);
-
-                if (VerifyFileIntegrity(original_path, modified_dll_hash) == 0)
-                {
-                    File.Move(original_path, backup_path);
-                }
-                File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store);
+                BedrockBypass(true);
                 Process.Start("explorer", "minecraft:");
                 Thread.Sleep(1000);
             }
-            else if (run_mode == "Minecraft Education (Win64)")
+            else if (current_mode == "Minecraft Education (Win64)")
             {
-                if (!run_status)
+                if (!current_status)
                 {
                     using (WebClient client = new WebClient())
                     {
@@ -356,14 +397,14 @@ namespace Minecraft_Bedrock_Launcher
                     Process.Start("explorer", "minecraftedu:");
                     Thread.Sleep(1000);
                 }
-                if (ToggleSwitch.Checked || run_status)
+                if (ToggleSwitch.Checked || current_status)
                 {
                     RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
                 }
             }
-            else if (run_mode == "Minecraft Education (Win32)")
+            else if (current_mode == "Minecraft Education (Win32)")
             {
-                if (!run_status)
+                if (!current_status)
                 {
                     using (WebClient client = new WebClient())
                     {
@@ -372,13 +413,13 @@ namespace Minecraft_Bedrock_Launcher
                     Process.Start(education_win32_path);
                     Thread.Sleep(1000);
                 }
-                if (ToggleSwitch.Checked || run_status)
+                if (ToggleSwitch.Checked || current_status)
                 {
                     RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
                 }
             }
 
-            run_status = true;
+            current_status = true;
         }
 
         void StopBypass()
@@ -387,27 +428,20 @@ namespace Minecraft_Bedrock_Launcher
             StopProcess();
             Thread.Sleep(1000);
 
-            if (run_mode == "Minecraft Bedrock")
+            if (current_mode == "Minecraft Bedrock")
             {
-                if (VerifyFileIntegrity(original_path, modified_dll_hash) == 1)
-                {
-                    File.Delete(original_path);
-                }
-                if (VerifyFileIntegrity(backup_path, modified_dll_hash) == 0)
-                {
-                    File.Move(backup_path, original_path);
-                }
+                BedrockBypass(false);
             }
-            else if (run_mode == "Minecraft Education (Win64)")
+            else if (current_mode == "Minecraft Education (Win64)")
             {
                 File.Delete("MBL.Helper_x64.exe");
             }
-            else if (run_mode == "Minecraft Education (Win32)")
+            else if (current_mode == "Minecraft Education (Win32)")
             {
                 File.Delete("MBL.Helper_x86.exe");
             }
 
-            run_status = false;
+            current_status = false;
         }
     }
 }
