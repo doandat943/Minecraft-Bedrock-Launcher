@@ -1,2 +1,0 @@
-intro:false
-developer_mode:true
