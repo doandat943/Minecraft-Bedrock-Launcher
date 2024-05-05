@@ -34,46 +34,45 @@
             Bunifu.ToggleSwitch.ToggleState toggleState1 = new Bunifu.ToggleSwitch.ToggleState();
             Bunifu.ToggleSwitch.ToggleState toggleState2 = new Bunifu.ToggleSwitch.ToggleState();
             Bunifu.ToggleSwitch.ToggleState toggleState3 = new Bunifu.ToggleSwitch.ToggleState();
-            this.GradientPanel = new Bunifu.Framework.UI.BunifuGradientPanel();
+            this.pnGradient = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.btnMinimize = new Bunifu.Framework.UI.BunifuImageButton();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
             this.pbFlag = new System.Windows.Forms.PictureBox();
-            this.ElipseControl = new Bunifu.Framework.UI.BunifuElipse(this.components);
-            this.DragControl = new Bunifu.Framework.UI.BunifuDragControl(this.components);
-            this.btnMain = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.ctrElipse = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.ctrDrag = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.ctrTimer = new System.Windows.Forms.Timer(this.components);
             this.axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
-            this.ToggleSwitch = new Bunifu.ToggleSwitch.BunifuToggleSwitch();
-            this.pbMain = new System.Windows.Forms.PictureBox();
-            this.GradientPanel.SuspendLayout();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnMain = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
+            this.btnSwitch = new Bunifu.ToggleSwitch.BunifuToggleSwitch();
+            this.pnGradient.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFlag)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
-            this.pbMain.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // GradientPanel
+            // pnGradient
             // 
-            this.GradientPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("GradientPanel.BackgroundImage")));
-            this.GradientPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.GradientPanel.Controls.Add(this.btnMinimize);
-            this.GradientPanel.Controls.Add(this.pbLogo);
-            this.GradientPanel.Controls.Add(this.btnClose);
-            this.GradientPanel.Controls.Add(this.pbFlag);
-            this.GradientPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GradientPanel.GradientBottomLeft = System.Drawing.Color.LightGray;
-            this.GradientPanel.GradientBottomRight = System.Drawing.Color.LightYellow;
-            this.GradientPanel.GradientTopLeft = System.Drawing.Color.DarkOrange;
-            this.GradientPanel.GradientTopRight = System.Drawing.Color.Goldenrod;
-            this.GradientPanel.Location = new System.Drawing.Point(0, 0);
-            this.GradientPanel.Name = "GradientPanel";
-            this.GradientPanel.Quality = 10;
-            this.GradientPanel.Size = new System.Drawing.Size(800, 28);
-            this.GradientPanel.TabIndex = 0;
+            this.pnGradient.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnGradient.BackgroundImage")));
+            this.pnGradient.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnGradient.Controls.Add(this.btnMinimize);
+            this.pnGradient.Controls.Add(this.pbLogo);
+            this.pnGradient.Controls.Add(this.btnClose);
+            this.pnGradient.Controls.Add(this.pbFlag);
+            this.pnGradient.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnGradient.GradientBottomLeft = System.Drawing.Color.LightGray;
+            this.pnGradient.GradientBottomRight = System.Drawing.Color.LightYellow;
+            this.pnGradient.GradientTopLeft = System.Drawing.Color.DarkOrange;
+            this.pnGradient.GradientTopRight = System.Drawing.Color.Goldenrod;
+            this.pnGradient.Location = new System.Drawing.Point(0, 0);
+            this.pnGradient.Name = "pnGradient";
+            this.pnGradient.Quality = 10;
+            this.pnGradient.Size = new System.Drawing.Size(800, 28);
+            this.pnGradient.TabIndex = 0;
             // 
             // btnMinimize
             // 
@@ -129,17 +128,45 @@
             this.pbFlag.TabStop = false;
             this.pbFlag.Click += new System.EventHandler(this.pbFlag_Click);
             // 
-            // ElipseControl
+            // ctrElipse
             // 
-            this.ElipseControl.ElipseRadius = 10;
-            this.ElipseControl.TargetControl = this;
+            this.ctrElipse.ElipseRadius = 10;
+            this.ctrElipse.TargetControl = this;
             // 
-            // DragControl
+            // ctrDrag
             // 
-            this.DragControl.Fixed = true;
-            this.DragControl.Horizontal = true;
-            this.DragControl.TargetControl = this.GradientPanel;
-            this.DragControl.Vertical = true;
+            this.ctrDrag.Fixed = true;
+            this.ctrDrag.Horizontal = true;
+            this.ctrDrag.TargetControl = this.pnGradient;
+            this.ctrDrag.Vertical = true;
+            // 
+            // ctrTimer
+            // 
+            this.ctrTimer.Enabled = true;
+            this.ctrTimer.Interval = 1000;
+            this.ctrTimer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // axWindowsMediaPlayer
+            // 
+            this.axWindowsMediaPlayer.Enabled = true;
+            this.axWindowsMediaPlayer.Location = new System.Drawing.Point(0, 0);
+            this.axWindowsMediaPlayer.Name = "axWindowsMediaPlayer";
+            this.axWindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer.OcxState")));
+            this.axWindowsMediaPlayer.Size = new System.Drawing.Size(0, 0);
+            this.axWindowsMediaPlayer.TabIndex = 2;
+            this.axWindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer_PlayStateChange);
+            // 
+            // panel1
+            // 
+            this.panel1.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
+            this.panel1.Controls.Add(this.btnMain);
+            this.panel1.Controls.Add(this.axWindowsMediaPlayer);
+            this.panel1.Controls.Add(this.btnSwitch);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 28);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(800, 450);
+            this.panel1.TabIndex = 3;
             // 
             // btnMain
             // 
@@ -178,7 +205,7 @@
             this.btnMain.IdleIconLeftImage = null;
             this.btnMain.IdleIconRightImage = null;
             this.btnMain.IndicateFocus = false;
-            this.btnMain.Location = new System.Drawing.Point(295, 341);
+            this.btnMain.Location = new System.Drawing.Point(295, 334);
             this.btnMain.Name = "btnMain";
             this.btnMain.onHoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(150)))), ((int)(((byte)(65)))));
             this.btnMain.onHoverState.BorderRadius = 10;
@@ -205,40 +232,23 @@
             this.btnMain.OnPressedState.IconLeftImage = null;
             this.btnMain.OnPressedState.IconRightImage = null;
             this.btnMain.Size = new System.Drawing.Size(210, 45);
-            this.btnMain.TabIndex = 1;
+            this.btnMain.TabIndex = 4;
             this.btnMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnMain.TextMarginLeft = 0;
             this.btnMain.UseDefaultRadiusAndThickness = true;
-            this.btnMain.Click += new System.EventHandler(this.btnMain_Click);
             // 
-            // timer
+            // btnSwitch
             // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // axWindowsMediaPlayer
-            // 
-            this.axWindowsMediaPlayer.Enabled = true;
-            this.axWindowsMediaPlayer.Location = new System.Drawing.Point(0, 0);
-            this.axWindowsMediaPlayer.Name = "axWindowsMediaPlayer";
-            this.axWindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer.OcxState")));
-            this.axWindowsMediaPlayer.Size = new System.Drawing.Size(0, 0);
-            this.axWindowsMediaPlayer.TabIndex = 2;
-            this.axWindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer_PlayStateChange);
-            // 
-            // ToggleSwitch
-            // 
-            this.ToggleSwitch.Animation = 5;
-            this.ToggleSwitch.BackColor = System.Drawing.Color.Transparent;
-            this.ToggleSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ToggleSwitch.BackgroundImage")));
-            this.ToggleSwitch.Checked = true;
-            this.ToggleSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ToggleSwitch.InnerCirclePadding = 3;
-            this.ToggleSwitch.Location = new System.Drawing.Point(383, 401);
-            this.ToggleSwitch.Name = "ToggleSwitch";
-            this.ToggleSwitch.Size = new System.Drawing.Size(35, 18);
-            this.ToggleSwitch.TabIndex = 3;
+            this.btnSwitch.Animation = 5;
+            this.btnSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.btnSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSwitch.BackgroundImage")));
+            this.btnSwitch.Checked = true;
+            this.btnSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSwitch.InnerCirclePadding = 3;
+            this.btnSwitch.Location = new System.Drawing.Point(383, 394);
+            this.btnSwitch.Name = "btnSwitch";
+            this.btnSwitch.Size = new System.Drawing.Size(35, 18);
+            this.btnSwitch.TabIndex = 5;
             toggleState1.BackColor = System.Drawing.Color.Empty;
             toggleState1.BackColorInner = System.Drawing.Color.Empty;
             toggleState1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(0)))), ((int)(((byte)(140)))));
@@ -247,7 +257,7 @@
             toggleState1.BorderRadiusInner = 1;
             toggleState1.BorderThickness = 1;
             toggleState1.BorderThicknessInner = 1;
-            this.ToggleSwitch.ToggleStateDisabled = toggleState1;
+            this.btnSwitch.ToggleStateDisabled = toggleState1;
             toggleState2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(179)))), ((int)(((byte)(46)))));
             toggleState2.BackColorInner = System.Drawing.Color.White;
             toggleState2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(179)))), ((int)(((byte)(46)))));
@@ -256,7 +266,7 @@
             toggleState2.BorderRadiusInner = 11;
             toggleState2.BorderThickness = 1;
             toggleState2.BorderThicknessInner = 1;
-            this.ToggleSwitch.ToggleStateOff = toggleState2;
+            this.btnSwitch.ToggleStateOff = toggleState2;
             toggleState3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(134)))), ((int)(((byte)(46)))));
             toggleState3.BackColorInner = System.Drawing.Color.White;
             toggleState3.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(134)))), ((int)(((byte)(46)))));
@@ -265,63 +275,47 @@
             toggleState3.BorderRadiusInner = 11;
             toggleState3.BorderThickness = 1;
             toggleState3.BorderThicknessInner = 1;
-            this.ToggleSwitch.ToggleStateOn = toggleState3;
-            this.ToggleSwitch.Value = true;
-            // 
-            // pbMain
-            // 
-            this.pbMain.Controls.Add(this.btnMain);
-            this.pbMain.Controls.Add(this.ToggleSwitch);
-            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbMain.Image = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
-            this.pbMain.Location = new System.Drawing.Point(0, 0);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(800, 450);
-            this.pbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbMain.TabIndex = 4;
-            this.pbMain.TabStop = false;
-            this.pbMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseClick);
+            this.btnSwitch.ToggleStateOn = toggleState3;
+            this.btnSwitch.Value = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.axWindowsMediaPlayer);
-            this.Controls.Add(this.GradientPanel);
-            this.Controls.Add(this.pbMain);
+            this.ClientSize = new System.Drawing.Size(800, 478);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnGradient);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Minecraft Bedrock Launcher";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.GradientPanel.ResumeLayout(false);
+            this.pnGradient.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFlag)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
-            this.pbMain.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Bunifu.Framework.UI.BunifuGradientPanel GradientPanel;
-        private Bunifu.Framework.UI.BunifuElipse ElipseControl;
+        private Bunifu.Framework.UI.BunifuGradientPanel pnGradient;
+        private Bunifu.Framework.UI.BunifuElipse ctrElipse;
         private System.Windows.Forms.PictureBox pbLogo;
-        private Bunifu.Framework.UI.BunifuDragControl DragControl;
+        private Bunifu.Framework.UI.BunifuDragControl ctrDrag;
         private System.Windows.Forms.PictureBox pbFlag;
         private Bunifu.Framework.UI.BunifuImageButton btnClose;
-        private Bunifu.UI.WinForms.BunifuButton.BunifuButton btnMain;
         private Bunifu.Framework.UI.BunifuImageButton btnMinimize;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer ctrTimer;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
-        private Bunifu.ToggleSwitch.BunifuToggleSwitch ToggleSwitch;
-        private System.Windows.Forms.PictureBox pbMain;
+        private System.Windows.Forms.Panel panel1;
+        private Bunifu.UI.WinForms.BunifuButton.BunifuButton btnMain;
+        private Bunifu.ToggleSwitch.BunifuToggleSwitch btnSwitch;
     }
 }
 

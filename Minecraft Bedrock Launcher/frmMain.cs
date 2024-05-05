@@ -39,7 +39,7 @@ namespace Minecraft_Bedrock_Launcher
 
             //
             btnMain.Visible = false;
-            ToggleSwitch.Visible = false;
+            btnSwitch.Visible = false;
             btnClose.Enabled = false;
             pbLogo.Enabled = false;
 
@@ -77,7 +77,7 @@ namespace Minecraft_Bedrock_Launcher
             if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
             {
                 btnMain.Visible = true;
-                ToggleSwitch.Visible = true;
+                btnSwitch.Visible = true;
                 btnClose.Enabled = true;
                 pbLogo.Enabled = true;
 
@@ -397,7 +397,7 @@ namespace Minecraft_Bedrock_Launcher
                     Process.Start("explorer", "minecraftedu:");
                     Thread.Sleep(1000);
                 }
-                if (ToggleSwitch.Checked || current_status)
+                if (btnSwitch.Checked || current_status)
                 {
                     RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
                 }
@@ -413,7 +413,7 @@ namespace Minecraft_Bedrock_Launcher
                     Process.Start(education_win32_path);
                     Thread.Sleep(1000);
                 }
-                if (ToggleSwitch.Checked || current_status)
+                if (btnSwitch.Checked || current_status)
                 {
                     RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
                 }
