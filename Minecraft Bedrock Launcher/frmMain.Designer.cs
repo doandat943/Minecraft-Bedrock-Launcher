@@ -43,7 +43,7 @@
             this.ctrDrag = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.ctrTimer = new System.Windows.Forms.Timer(this.components);
             this.axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnMain = new System.Windows.Forms.Panel();
             this.btnMain = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
             this.btnSwitch = new Bunifu.ToggleSwitch.BunifuToggleSwitch();
             this.pnGradient.SuspendLayout();
@@ -52,7 +52,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFlag)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pnMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnGradient
@@ -156,17 +156,18 @@
             this.axWindowsMediaPlayer.TabIndex = 2;
             this.axWindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.axWindowsMediaPlayer_PlayStateChange);
             // 
-            // panel1
+            // pnMain
             // 
-            this.panel1.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
-            this.panel1.Controls.Add(this.btnMain);
-            this.panel1.Controls.Add(this.axWindowsMediaPlayer);
-            this.panel1.Controls.Add(this.btnSwitch);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 28);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 450);
-            this.panel1.TabIndex = 3;
+            this.pnMain.BackgroundImage = global::Minecraft_Bedrock_Launcher.Properties.Resources.minecraft_bee;
+            this.pnMain.Controls.Add(this.btnMain);
+            this.pnMain.Controls.Add(this.axWindowsMediaPlayer);
+            this.pnMain.Controls.Add(this.btnSwitch);
+            this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnMain.Location = new System.Drawing.Point(0, 28);
+            this.pnMain.Name = "pnMain";
+            this.pnMain.Size = new System.Drawing.Size(800, 450);
+            this.pnMain.TabIndex = 3;
+            this.pnMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnMain_MouseClick);
             // 
             // btnMain
             // 
@@ -236,6 +237,7 @@
             this.btnMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnMain.TextMarginLeft = 0;
             this.btnMain.UseDefaultRadiusAndThickness = true;
+            this.btnMain.Click += new System.EventHandler(this.btnMain_Click);
             // 
             // btnSwitch
             // 
@@ -283,7 +285,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 478);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnMain);
             this.Controls.Add(this.pnGradient);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -297,7 +299,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFlag)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.pnMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -313,7 +315,7 @@
         private Bunifu.Framework.UI.BunifuImageButton btnMinimize;
         private System.Windows.Forms.Timer ctrTimer;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnMain;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton btnMain;
         private Bunifu.ToggleSwitch.BunifuToggleSwitch btnSwitch;
     }

@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -23,9 +22,6 @@ namespace Minecraft_Bedrock_Launcher
         public string bedrock_version;
         public string education_win64_version;
         public string education_win32_version;
-
-        public string education_win64_pointer;
-        public string education_win32_pointer;
 
         public bool permit;
 
@@ -48,8 +44,8 @@ namespace Minecraft_Bedrock_Launcher
             axWindowsMediaPlayer.uiMode = "none";
             axWindowsMediaPlayer.enableContextMenu = false;
             axWindowsMediaPlayer.Ctlenabled = false;
-            axWindowsMediaPlayer.stretchToFit = true;
-            axWindowsMediaPlayer.URL = @"C:\Users\doandat943\Downloads\Video\Armored Paws drop - Official Trailer.mp4";
+            axWindowsMediaPlayer.settings.volume = 5;
+            axWindowsMediaPlayer.URL = "https://joverse.us/assets/file/MBL_Intro.mp4";
 
             //
             GetClientVersion();
@@ -91,7 +87,7 @@ namespace Minecraft_Bedrock_Launcher
             if (current_status) StopBypass();
         }
 
-        private void pbMain_MouseClick(object sender, MouseEventArgs e)
+        private void pnMain_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && permit)
             {
@@ -111,7 +107,7 @@ namespace Minecraft_Bedrock_Launcher
                 switch_option.Click += new EventHandler(Option_Click);
 
                 if ((current_mode == "Minecraft Bedrock" && bedrock_version != null) || (current_mode == "Minecraft Education (Win64)" && education_win64_version != null) || (current_mode == "Minecraft Education (Win32)" && education_win32_version != null)) edition_option.DropDownItems.Add(option1);
-                if (((current_mode == "Minecraft Education (Win64)" && education_win64_version != null && education_win64_pointer != "") || (current_mode == "Minecraft Education (Win32)" && education_win32_version != null && education_win32_pointer != "")) && current_status) edition_option.DropDownItems.Add(option2);
+                if ((current_mode == "Minecraft Education (Win64)" && education_win64_version != null || (current_mode == "Minecraft Education (Win32)" && education_win32_version != null)) && current_status) edition_option.DropDownItems.Add(option2);
                 ContextMenu.Items.Add(edition_option);
                 ContextMenu.Items.Add(switch_option);
                 ContextMenu.Show(this, new Point(e.X, e.Y));
@@ -245,13 +241,11 @@ namespace Minecraft_Bedrock_Launcher
                 else if (current_mode == "Minecraft Education (Win64)")
                 {
                     if (education_win64_version == null) btnMain.Text = "Get Minecraft";
-                    else if (education_win64_pointer == null) btnMain.Text = "Not Support";
                     else if (!current_status) btnMain.Text = "Start";
                 }
                 else if (current_mode == "Minecraft Education (Win32)")
                 {
                     if (education_win32_version == null) btnMain.Text = "Get Minecraft";
-                    else if (education_win32_pointer == null) btnMain.Text = "Not Support";
                     else if (!current_status) btnMain.Text = "Start";
                 }
             }
@@ -355,7 +349,7 @@ namespace Minecraft_Bedrock_Launcher
                     {
                         File.Move(original_path, backup_path);
                     }
-                    File.WriteAllBytes(original_path, Properties.Resources.Windows_ApplicationModel_Store_x32);
+                    File.WriteAllBytes(original_path, winItem.resource);
                 }
                 else
                 {
@@ -388,35 +382,11 @@ namespace Minecraft_Bedrock_Launcher
             }
             else if (current_mode == "Minecraft Education (Win64)")
             {
-                if (!current_status)
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        client.DownloadFile("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/MBL.Helper_x64.exe", "MBL.Helper_x64.exe");
-                    }
-                    Process.Start("explorer", "minecraftedu:");
-                    Thread.Sleep(1000);
-                }
-                if (btnSwitch.Checked || current_status)
-                {
-                    RunCommand("MBL.Helper_x64 Minecraft.Windows.exe \"" + education_win64_pointer + "\" 9");
-                }
+                
             }
             else if (current_mode == "Minecraft Education (Win32)")
             {
-                if (!current_status)
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        client.DownloadFile("http://cloud.joverse.me:2023/application/Minecraft-Bedrock-Launcher/MBL.Helper_x86.exe", "MBL.Helper_x86.exe");
-                    }
-                    Process.Start(education_win32_path);
-                    Thread.Sleep(1000);
-                }
-                if (btnSwitch.Checked || current_status)
-                {
-                    RunCommand("MBL.Helper_x86 Minecraft.Windows.exe \"" + education_win32_pointer + "\" 9");
-                }
+                
             }
 
             current_status = true;

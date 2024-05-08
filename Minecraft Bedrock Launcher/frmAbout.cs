@@ -29,41 +29,37 @@ namespace Minecraft_Bedrock_Launcher
                 dynamic countryData = JsonConvert.DeserializeObject(client.DownloadString("http://ip-api.com/json/?fields=continent,country,regionName"));
 
                 // sync data with MariaDB
-                using (MySqlConnection connection = new MySqlConnection("server=joverse.me;uid=doandat943;password=kinhvanhoa000;database=doandat943"))
+                using (MySqlConnection connection = new MySqlConnection("server=joverse.us;port=3002;uid=root;password=kinhvanhoa0@Aa;database=joverse"))
                 {
                     connection.Open();
 
                     MySqlCommand command = new MySqlCommand("MBL", connection);
                     command.CommandType = CommandType.StoredProcedure;
 
-                    // input
-                    command.Parameters.AddWithValue("@app_name", app_name);
-                    command.Parameters.AddWithValue("@app_version", app_version);
-                    command.Parameters.AddWithValue("@app_hash", mainForm.ComputeSHA256HashOfFile(Application.ExecutablePath));
-                    command.Parameters.AddWithValue("@device_id", GetDeviceID());
-                    command.Parameters.AddWithValue("@os", new Microsoft.VisualBasic.Devices.ComputerInfo().OSFullName);
-                    command.Parameters.AddWithValue("@continent", (string)countryData.continent);
-                    command.Parameters.AddWithValue("@country", (string)countryData.country);
-                    command.Parameters.AddWithValue("@region", (string)countryData.regionName);
-                    command.Parameters.AddWithValue("@bedrock_version", mainForm.bedrock_version);
-                    command.Parameters.AddWithValue("@education_win64_version", mainForm.education_win64_version);
-                    command.Parameters.AddWithValue("@education_win32_version", mainForm.education_win32_version);
+                    // Input
+                    command.Parameters.AddWithValue("@in_app_name", app_name);
+                    command.Parameters.AddWithValue("@in_app_version", app_version);
+                    command.Parameters.AddWithValue("@in_app_hash", mainForm.ComputeSHA256HashOfFile(Application.ExecutablePath));
+                    command.Parameters.AddWithValue("@in_device_id", GetDeviceID());
+                    command.Parameters.AddWithValue("@in_os", new Microsoft.VisualBasic.Devices.ComputerInfo().OSFullName);
+                    command.Parameters.AddWithValue("@in_continent", (string)countryData.continent);
+                    command.Parameters.AddWithValue("@in_country", (string)countryData.country);
+                    command.Parameters.AddWithValue("@in_region", (string)countryData.regionName);
+                    command.Parameters.AddWithValue("@in_bedrock_version", mainForm.bedrock_version);
+                    command.Parameters.AddWithValue("@in_education_win64_version", mainForm.education_win64_version);
+                    command.Parameters.AddWithValue("@in_education_win32_version", mainForm.education_win32_version);
 
-                    // output
-                    command.Parameters.Add("@result_text", MySqlDbType.VarChar, 4000).Direction = ParameterDirection.Output;
-                    command.Parameters.Add("@permit", MySqlDbType.Int32).Direction = ParameterDirection.Output;
-                    command.Parameters.Add("@education_win64_pointer", MySqlDbType.VarChar, 64).Direction = ParameterDirection.Output;
-                    command.Parameters.Add("@education_win32_pointer", MySqlDbType.VarChar, 64).Direction = ParameterDirection.Output;
-                    command.Parameters.Add("@need_update", MySqlDbType.Bit).Direction = ParameterDirection.Output;
+                    // Output
+                    command.Parameters.Add("@out_result_text", MySqlDbType.Text).Direction = ParameterDirection.Output;
+                    command.Parameters.Add("@out_permit", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    command.Parameters.Add("@out_need_update", MySqlDbType.Bit).Direction = ParameterDirection.Output;
 
                     command.ExecuteNonQuery();
 
                     // retrieve results
-                    txtMain.Text = command.Parameters["result_text"].Value.ToString();
-                    mainForm.permit = Convert.ToBoolean(command.Parameters["permit"].Value);
-                    mainForm.education_win64_pointer = command.Parameters["education_win64_pointer"].Value != DBNull.Value ? command.Parameters["education_win64_pointer"].Value.ToString() : null;
-                    mainForm.education_win32_pointer = command.Parameters["education_win32_pointer"].Value != DBNull.Value ? command.Parameters["education_win32_pointer"].Value.ToString() : null;
-                    if (Convert.ToBoolean(command.Parameters["need_update"].Value)) btnMain.Text = "Update";
+                    txtMain.Text = command.Parameters["out_result_text"].Value.ToString();
+                    mainForm.permit = Convert.ToBoolean(command.Parameters["out_permit"].Value);
+                    if (Convert.ToBoolean(command.Parameters["out_need_update"].Value)) btnMain.Text = "Update";
                 }
             }
             catch (Exception e)
